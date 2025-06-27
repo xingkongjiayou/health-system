@@ -13,7 +13,13 @@ public class UserService {
     @Autowired
     private UserDao userDao;
     public LoginInfo login(User user) {
-        LoginInfo loginInfo = new LoginInfo();
-        return loginInfo;
+        User u=userDao.findUserByUserNameAndPassword(user);
+        if(u!=null) {
+            log.info("aaaaaaaaaaaaaaaaaaaa");
+            return new LoginInfo(" ", u.getId(), u.getRole(), 3600);
+        }
+        return null;
     }
 }
+
+
