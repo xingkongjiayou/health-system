@@ -26,4 +26,15 @@ public class LoginController {
         }
         return CommonResponse.createForError("用户名或密码错误");
     }
+    @PostMapping
+    public CommonResponse<Integer> register(@RequestBody User user,@RequestParam String captcha) {
+        log.info("注册：{}", user);
+        Integer userId=userService.register(user,captcha);
+        if(userId!=null) {
+            return CommonResponse.createForSuccess(userId);
+        }
+        return CommonResponse.createForError("注册失败");
+    }
 }
+
+

@@ -30,4 +30,13 @@
         WHERE username=#{username}
         GROUP BY sys_user.id
     </select>
+
+    <insert id="addUser">
+        INSERT INTO sys_user(username,password,email,phone,real_name,avatar,status) 
+        VALUES (#{username},#{password},#{email},#{phone},#{realName},#{avatar},#{status})
+    </insert>
+    
+    <insert id="addRole">
+        INSERT INTO sys_role(roleName,roleCode)
+    </insert>
 </mapper>

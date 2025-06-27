@@ -1,6 +1,7 @@
 package org.csu.healthsystem.util;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.csu.healthsystem.pojo.DO.SysRole;
 import org.csu.healthsystem.pojo.DO.User;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface UserDao {
     User findUserByUserNameAndPassword(User user);
     User findUserByUserName(String userName);
-    User addUser(User user);
-    User findUserById(int id);
+    Integer addUser(User user);
+    Integer addRole(SysRole role);
+    Integer addRoleUser(User user, SysRole role);
+    User findUserById(Integer id);
 }
