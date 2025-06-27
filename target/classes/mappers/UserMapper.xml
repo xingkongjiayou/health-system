@@ -23,20 +23,23 @@
     </select>
 
     <select id="findUserByUsername" resultMap="UserWithRolesMap">
-        SELECT sys_user.id,sys_role.role_code
+        SELECT sys_user.id,sys_role.role_code,sys_user.password
         FROM sys_user_role
                  LEFT JOIN sys_role on sys_role.id=sys_user_role.role_id
                  LEFT JOIN sys_user on sys_user.id=sys_user_role.user_id
         WHERE username=#{username}
-        GROUP BY sys_user.id
     </select>
 
-    <insert id="addUser">
-        INSERT INTO sys_user(username,password,email,phone,real_name,avatar,status) 
-        VALUES (#{username},#{password},#{email},#{phone},#{realName},#{avatar},#{status})
+    <!-- UserMapper.xml -->
+    <insert id="addUser"
+            useGeneratedKeys="true"
+            keyProperty="id" keyColumn="id">
+        INSERT INTO sys_user(username, password, email, phone, real_name, avatar, status)
+        VALUES (#{username}, #{password}, #{email}, #{phone}, #{realName}, #{avatar}, 1)
     </insert>
+
     
-    <insert id="addRole">
-        INSERT INTO sys_role(roleName,roleCode)
-    </insert>
+    <select id="findUserById" resultType="org.csu.healthsystem.pojo.DO.User">
+        SELECT * FROM sys_user WHERE id=#{id};
+    </select>
 </mapper>

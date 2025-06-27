@@ -5,9 +5,11 @@ package org.csu.healthsystem.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.csu.healthsystem.common.CommonResponse;
 import org.csu.healthsystem.pojo.DO.User;
+import org.csu.healthsystem.pojo.DTO.RegisterDTO;
 import org.csu.healthsystem.pojo.VO.LoginInfo;
 import org.csu.healthsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -26,10 +28,10 @@ public class LoginController {
         }
         return CommonResponse.createForError("用户名或密码错误");
     }
-    @PostMapping
-    public CommonResponse<Integer> register(@RequestBody User user,@RequestParam String captcha) {
-        log.info("注册：{}", user);
-        Integer userId=userService.register(user,captcha);
+    @PostMapping("/register")
+    public CommonResponse<Integer> register(@RequestBody @Validated RegisterDTO registerDTO, @RequestParam String captcha) {
+        log.info("注册：{}", registerDTO.getUser());
+        Integer userId=userService.register(registerDTO,captcha);
         if(userId!=null) {
             return CommonResponse.createForSuccess(userId);
         }

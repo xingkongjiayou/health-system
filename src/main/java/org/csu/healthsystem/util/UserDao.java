@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface UserDao {
     User findUserByUserNameAndPassword(User user);
-    User findUserByUserName(String userName);
+    User findUserByUsername(String userName);
     Integer addUser(User user);
-    Integer addRole(SysRole role);
-    Integer addRoleUser(User user, SysRole role);
     User findUserById(Integer id);
 }

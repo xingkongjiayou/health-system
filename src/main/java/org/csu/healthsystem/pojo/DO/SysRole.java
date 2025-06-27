@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SysRole {
-    private Long id;
+    private Integer id;
     private String roleName;
     private String roleCode;
     private String description;
