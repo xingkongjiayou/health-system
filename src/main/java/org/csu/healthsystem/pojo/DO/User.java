@@ -23,5 +23,7 @@ public class User {
     private Integer deptId;
     private Date createTime;
     private Date updateTime;
+    private Date lastLoginTime;
+    private String loginIp;
 }
 

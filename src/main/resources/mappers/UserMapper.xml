@@ -10,12 +10,12 @@
         <collection property="role"
                     javaType="java.util.ArrayList"
                     ofType="org.csu.healthsystem.pojo.DO.Role">
-            <result column="role_name"/>
+            <result column="role_code"/>
         </collection>
     </resultMap>
 
     <select id="findUserByUserNameAndPassword" resultMap="UserWithRolesMap">
-        SELECT sys_user.id,sys_role.role_name
+        SELECT sys_user.id,sys_role.role_code
         FROM sys_user_role
                  LEFT JOIN sys_role on sys_role.id=sys_user_role.role_id
                  LEFT JOIN sys_user on sys_user.id=sys_user_role.user_id
@@ -23,7 +23,7 @@
     </select>
 
     <select id="findUserByUsername" resultMap="UserWithRolesMap">
-        SELECT sys_user.id,sys_role.role_name
+        SELECT sys_user.id,sys_role.role_code
         FROM sys_user_role
                  LEFT JOIN sys_role on sys_role.id=sys_user_role.role_id
                  LEFT JOIN sys_user on sys_user.id=sys_user_role.user_id

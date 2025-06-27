@@ -2,8 +2,10 @@ package org.csu.healthsystem.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Getter;
 
+@Builder(toBuilder = true)
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL) // 只序列化非空字段
 public class CommonResponse<T> {
