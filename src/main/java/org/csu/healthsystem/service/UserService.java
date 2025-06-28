@@ -29,6 +29,7 @@ public class UserService {
     private HttpSession session;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
     public LoginInfo login(User user) {
         System.out.println(user.getUsername());
         User u = userDao.findUserByUsername(user.getUsername());
@@ -46,39 +47,32 @@ public class UserService {
         }
         return null;
     }
-//session.getAttribute("captcha").equalsIgnoreCase(captcha)
+
+    //session.getAttribute("captcha").equalsIgnoreCase(captcha)
     @Transactional
     public Integer register(RegisterDTO registerDTO, String captcha) {
-        if(captcha.equalsIgnoreCase((String)session.getAttribute("captcha"))||captcha.equalsIgnoreCase("mirtable233")) {
-                List<Integer> roleIds = new ArrayList<>();
-                for (SysRole dto : registerDTO.getRoles()) {
-                    SysRole role = roleDao.findSysRoleById(dto.getId());
-                    if (role == null) {
-                        role = new SysRole();
-                        BeanUtils.copyProperties(dto, role);
-                        role.setStatus(1);
-                        roleDao.addRole(role);          // 自增 id 回填
-                    }
-                    roleIds.add(role.getId());
-                }
+        if (captcha.equalsIgnoreCase((String) session.getAttribute("captcha")) || captcha.equalsIgnoreCase("mirtable233")) {
+            List<Integer> roleIds = new ArrayList<>();
+            for (SysRole dto : registerDTO.getRoles()) {
+                SysRole role = roleDao.findSysRoleById(dto.getId());
+                roleIds.add(role.getId());
+            }
 
-                User user = new User();
-                BeanUtils.copyProperties(registerDTO.getUser(), user);
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-                userDao.addUser(user);                 // useGeneratedKeys="true"
+            User user = new User();
+            BeanUtils.copyProperties(registerDTO.getUser(), user);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userDao.addUser(user);                 // useGeneratedKeys="true"
 
-                /* ---------- 3. 批量写关联表 ---------- */
+            /* ---------- 3. 批量写关联表 ---------- */
             // 3. 批量写关联表
             if (!roleIds.isEmpty()) {
                 roleDao.batchAddRoleUser(user.getId(), roleIds);
             }
-
-
             return user.getId();
-            }
-                return null;
-            }
-
+        }
+        return null;
     }
+
+}
 
 

@@ -28,6 +28,7 @@ public class LoginController {
         }
         return CommonResponse.createForError("用户名或密码错误");
     }
+
     @PostMapping("/register")
     public CommonResponse<Integer> register(@RequestBody @Validated RegisterDTO registerDTO, @RequestParam String captcha) {
         log.info("注册：{}", registerDTO.getUser());
