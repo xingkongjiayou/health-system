@@ -6,6 +6,7 @@ import org.csu.healthsystem.pojo.DO.SysRole;
 import org.csu.healthsystem.pojo.DO.User;
 import org.csu.healthsystem.pojo.DTO.RegisterDTO;
 import org.csu.healthsystem.pojo.VO.LoginInfo;
+import org.csu.healthsystem.util.JwtUtil;
 import org.csu.healthsystem.util.SysRoleDao;
 import org.csu.healthsystem.util.UserDao;
 import org.springframework.beans.BeanUtils;
@@ -13,10 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("UserService")
 @Slf4j
@@ -38,7 +40,10 @@ public class UserService {
             System.out.println("Input password: " + user.getPassword());
             if (passwordEncoder.matches(user.getPassword(), u.getPassword())) {
                 log.info("登录成功 {}", user.getUsername());
-                return new LoginInfo(" ", u.getId(), u.getRole(), 3600);
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", u.getId());
+                map.put("username", u.getUsername());
+                return new LoginInfo(JwtUtil.generateToken(map), u.getRole(), 3600);
             } else {
                 log.warn("密码不匹配");
             }

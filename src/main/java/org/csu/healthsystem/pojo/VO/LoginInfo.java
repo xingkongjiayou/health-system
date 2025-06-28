@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class LoginInfo {
     private String token;
-    private Integer userId;
     private List<Role> roles;
     private Integer expiresIn;
 }
