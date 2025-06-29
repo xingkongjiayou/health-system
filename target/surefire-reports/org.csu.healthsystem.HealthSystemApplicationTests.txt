@@ -1,4 +1,14 @@
 -------------------------------------------------------------------------------
 Test set: org.csu.healthsystem.HealthSystemApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.869 s -- in org.csu.healthsystem.HealthSystemApplicationTests
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 4.900 s <<< FAILURE! -- in org.csu.healthsystem.HealthSystemApplicationTests
+org.csu.healthsystem.HealthSystemApplicationTests.testParseJwt -- Time elapsed: 0.014 s <<< ERROR!
+io.jsonwebtoken.ExpiredJwtException: JWT expired at 2025-06-28T23:23:58Z. Current time: 2025-06-29T12:38:24Z, a difference of 47666432 milliseconds.  Allowed clock skew: 0 milliseconds.
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:385)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:481)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:541)
+	at org.csu.healthsystem.HealthSystemApplicationTests.testParseJwt(HealthSystemApplicationTests.java:37)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+

@@ -8,7 +8,6 @@ import org.csu.healthsystem.pojo.DO.User;
 
 @Data
 public class VerificationDTO {
-    @Valid
     private User user;
-    @Valid private SysRole role;
+    private SysRole role;
 }
