@@ -1,7 +1,6 @@
 package org.csu.healthsystem.util;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.csu.healthsystem.pojo.DO.SysRole;
 import org.csu.healthsystem.pojo.DO.User;
 import org.springframework.stereotype.Repository;
 

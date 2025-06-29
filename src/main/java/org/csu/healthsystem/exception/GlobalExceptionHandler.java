@@ -8,6 +8,7 @@ import org.csu.healthsystem.common.ResponseCode;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 
+import org.springframework.mail.MailSendException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -37,6 +38,12 @@ public class GlobalExceptionHandler {
     public CommonResponse<Object> handleException(Exception e) {
         log.error(e.getMessage(), e);
         return CommonResponse.createForError(500,"出错了，请联系后端管理员");
+    }
+
+    @ExceptionHandler(MailSendException.class)
+    public CommonResponse<?> handleMailSendException(MailSendException e) {
+        log.error("邮件发送失败：", e);
+        return CommonResponse.createForError("邮件发送失败：" + e.getMessage());
     }
     /**
      *重复元素异常处理

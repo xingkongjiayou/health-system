@@ -59,6 +59,7 @@ public class UserService {
         if (captcha.equalsIgnoreCase((String) session.getAttribute("captcha")) || captcha.equalsIgnoreCase("mirtable233")) {
             List<Integer> roleIds = new ArrayList<>();
             for (SysRole dto : registerDTO.getRoles()) {
+                roleDao.addRole(dto);
                 SysRole role = roleDao.findSysRoleById(dto.getId());
                 roleIds.add(role.getId());
             }
