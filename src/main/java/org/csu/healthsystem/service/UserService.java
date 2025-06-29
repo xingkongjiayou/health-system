@@ -36,8 +36,6 @@ public class UserService {
         System.out.println(user.getUsername());
         User u = userDao.findUserByUsername(user.getUsername());
         if (u != null) {
-            System.out.println("DB password: " + u.getPassword());
-            System.out.println("Input password: " + user.getPassword());
             if (passwordEncoder.matches(user.getPassword(), u.getPassword())) {
                 log.info("登录成功 {}", user.getUsername());
                 Map<String, Object> map = new HashMap<>();

@@ -110,7 +110,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public CommonResponse<Object> handleNoHandlerFoundException(NoHandlerFoundException e) {
         log.error("请求的资源不存在: {}", e.getRequestURL());
-        return CommonResponse.createForError(ResponseCode.NOT_FOUND.getCode(), "嗯？奶龙没有这种东西的哦");
+        return CommonResponse.createForError(ResponseCode.NOT_FOUND.getCode(), "请求的资源不存在");
     }
 
     /**
@@ -131,7 +131,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public CommonResponse<Object> handleSocketTimeoutException(SocketTimeoutException e) {
         log.error("请求超时: {}", e.getMessage());
-        return CommonResponse.createForError(408, "世界上最遥远的距离，莫过于你与奶龙之间少了互联网的桥梁");
+        return CommonResponse.createForError(408, "你的网络太烂了");
     }
 
     /**
@@ -142,7 +142,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public CommonResponse<Object> handleUnknownHostException(UnknownHostException e) {
         log.error("无法连接服务器: {}", e.getMessage());
-        return CommonResponse.createForError(503, "世界上最遥远的距离，莫过于你与奶龙之间少了互联网的桥梁");
+        return CommonResponse.createForError(503, "服务器炸了，无法连接");
     }
 
     /**
