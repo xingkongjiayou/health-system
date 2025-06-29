@@ -5,7 +5,6 @@ import org.csu.healthsystem.common.CommonResponse;
 import org.csu.healthsystem.pojo.DTO.VerificationDTO;
 import org.csu.healthsystem.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -16,7 +15,7 @@ public class MailController {
     private MailService mailService;
 
     @PostMapping("/code")
-    public CommonResponse<String> verify(@RequestBody VerificationDTO verificationDTO) {
+    public CommonResponse<String> sendCode(@RequestBody VerificationDTO verificationDTO) {
         mailService.verify(verificationDTO);
         return CommonResponse.createForSuccess("邮件发送成功");
     }
