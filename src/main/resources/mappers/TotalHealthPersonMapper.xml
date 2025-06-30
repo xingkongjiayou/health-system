@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.healthsystem.util.TotalHealthPersonDao">
+    <select id="getAll" resultType="org.csu.healthsystem.pojo.DO.TotalHealthPerson">
+        SELECT id, year, total_count AS totalCount
+        FROM total_health_person
+    </select>
+</mapper>
