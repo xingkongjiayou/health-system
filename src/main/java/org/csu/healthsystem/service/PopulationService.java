@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service;
 @Service("PopulationService")
 @Slf4j
 public class PopulationService {
+
 }
