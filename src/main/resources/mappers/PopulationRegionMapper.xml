@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.csu.healthsystem.util.PopulationRegionDao">
+    <resultMap id="PopulationRegionDtoMap" type="org.csu.healthsystem.pojo.DO.PopulationRegion">
+        <result column="name"            property="name"/>
+        <result column="level"           property="level"/>
+        <result column="year"            property="year"/>
+        <result column="population"      property="population"/>
+        <result column="birth_population" property="birthPopulation"/>
+        <result column="death_population" property="deathPopulation"/>
+        <result column="birth_rate"       property="birthRate"/>
+        <result column="death_rate"       property="deathRate"/>
+        <result column="growth_rate"      property="growthRate"/>
+    </resultMap>
+    <!-- ===================================================================== -->
+    <!-- 通用动态查询条件：PopulationRegion                                    -->
+    <!-- 使用别名 p.xxx 作为参数对象字段                                      -->
+    <!-- ===================================================================== -->
+    <sql id="dynamicWhere">
+        <where>
+
+            <!-- ================== name ================== -->
+            <if test="p.nameEq     != null"> AND name =  #{p.nameEq}  </if>
+            <if test="p.nameNotEq  != null"> AND name != #{p.nameNotEq} </if>
+
+            <if test="p.nameIn != null">
+                AND name IN
+                <foreach collection="p.nameIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.nameNotIn != null">
+                AND name NOT IN
+                <foreach collection="p.nameNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.nameLike     != null"> AND name LIKE     #{p.nameLike}     </if>
+            <if test="p.nameNotLike  != null"> AND name NOT LIKE #{p.nameNotLike}  </if>
+
+
+            <!-- ================== level ================== -->
+            <if test="p.levelEq     != null"> AND level =  #{p.levelEq}  </if>
+            <if test="p.levelNotEq  != null"> AND level != #{p.levelNotEq} </if>
+
+            <if test="p.levelIn != null">
+                AND level IN
+                <foreach collection="p.levelIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.levelNotIn != null">
+                AND level NOT IN
+                <foreach collection="p.levelNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.levelLike     != null"> AND level LIKE     #{p.levelLike}     </if>
+            <if test="p.levelNotLike  != null"> AND level NOT LIKE #{p.levelNotLike}  </if>
+
+
+            <!-- ================== year ================== -->
+            <if test="p.yearEq  != null"> AND year =  #{p.yearEq}  </if>
+            <if test="p.yearGt  != null"> AND year &gt;  #{p.yearGt}  </if>
+            <if test="p.yearGte != null"> AND year &gt;= #{p.yearGte} </if>
+            <if test="p.yearLt  != null"> AND year &lt;  #{p.yearLt}  </if>
+            <if test="p.yearLte != null"> AND year &lt;= #{p.yearLte} </if>
+            <if test="p.yearNotEq != null"> AND year != #{p.yearNotEq} </if>
+
+            <if test="p.yearIn != null">
+                AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.yearNotIn != null">
+                AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+
+            <!-- ================== population ================== -->
+            <if test="p.populationEq  != null"> AND population =  #{p.populationEq}  </if>
+            <if test="p.populationGt  != null"> AND population &gt;  #{p.populationGt}  </if>
+            <if test="p.populationGte != null"> AND population &gt;= #{p.populationGte} </if>
+            <if test="p.populationLt  != null"> AND population &lt;  #{p.populationLt}  </if>
+            <if test="p.populationLte != null"> AND population &lt;= #{p.populationLte} </if>
+            <if test="p.populationNotEq != null"> AND population != #{p.populationNotEq} </if>
+
+            <if test="p.populationIn != null">
+                AND population IN
+                <foreach collection="p.populationIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.populationNotIn != null">
+                AND population NOT IN
+                <foreach collection="p.populationNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+
+            <!-- ================== birth_population ================== -->
+            <if test="p.birthPopulationEq  != null"> AND birth_population =  #{p.birthPopulationEq}  </if>
+            <if test="p.birthPopulationGt  != null"> AND birth_population &gt;  #{p.birthPopulationGt}  </if>
+            <if test="p.birthPopulationGte != null"> AND birth_population &gt;= #{p.birthPopulationGte} </if>
+            <if test="p.birthPopulationLt  != null"> AND birth_population &lt;  #{p.birthPopulationLt}  </if>
+            <if test="p.birthPopulationLte != null"> AND birth_population &lt;= #{p.birthPopulationLte} </if>
+            <if test="p.birthPopulationNotEq != null"> AND birth_population != #{p.birthPopulationNotEq} </if>
+
+            <if test="p.birthPopulationIn != null">
+                AND birth_population IN
+                <foreach collection="p.birthPopulationIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.birthPopulationNotIn != null">
+                AND birth_population NOT IN
+                <foreach collection="p.birthPopulationNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+
+            <!-- ================== death_population ================== -->
+            <if test="p.deathPopulationEq  != null"> AND death_population =  #{p.deathPopulationEq}  </if>
+            <if test="p.deathPopulationGt  != null"> AND death_population &gt;  #{p.deathPopulationGt}  </if>
+            <if test="p.deathPopulationGte != null"> AND death_population &gt;= #{p.deathPopulationGte} </if>
+            <if test="p.deathPopulationLt  != null"> AND death_population &lt;  #{p.deathPopulationLt}  </if>
+            <if test="p.deathPopulationLte != null"> AND death_population &lt;= #{p.deathPopulationLte} </if>
+            <if test="p.deathPopulationNotEq != null"> AND death_population != #{p.deathPopulationNotEq} </if>
+
+            <if test="p.deathPopulationIn != null">
+                AND death_population IN
+                <foreach collection="p.deathPopulationIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.deathPopulationNotIn != null">
+                AND death_population NOT IN
+                <foreach collection="p.deathPopulationNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+
+            <!-- ================== birth_rate ================== -->
+            <if test="p.birthRateEq  != null"> AND birth_rate =  #{p.birthRateEq}  </if>
+            <if test="p.birthRateGt  != null"> AND birth_rate &gt;  #{p.birthRateGt}  </if>
+            <if test="p.birthRateGte != null"> AND birth_rate &gt;= #{p.birthRateGte} </if>
+            <if test="p.birthRateLt  != null"> AND birth_rate &lt;  #{p.birthRateLt}  </if>
+            <if test="p.birthRateLte != null"> AND birth_rate &lt;= #{p.birthRateLte} </if>
+            <if test="p.birthRateNotEq != null"> AND birth_rate != #{p.birthRateNotEq} </if>
+
+            <if test="p.birthRateIn != null">
+                AND birth_rate IN
+                <foreach collection="p.birthRateIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.birthRateNotIn != null">
+                AND birth_rate NOT IN
+                <foreach collection="p.birthRateNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+
+            <!-- ================== death_rate ================== -->
+            <if test="p.deathRateEq  != null"> AND death_rate =  #{p.deathRateEq}  </if>
+            <if test="p.deathRateGt  != null"> AND death_rate &gt;  #{p.deathRateGt}  </if>
+            <if test="p.deathRateGte != null"> AND death_rate &gt;= #{p.deathRateGte} </if>
+            <if test="p.deathRateLt  != null"> AND death_rate &lt;  #{p.deathRateLt}  </if>
+            <if test="p.deathRateLte != null"> AND death_rate &lt;= #{p.deathRateLte} </if>
+            <if test="p.deathRateNotEq != null"> AND death_rate != #{p.deathRateNotEq} </if>
+
+            <if test="p.deathRateIn != null">
+                AND death_rate IN
+                <foreach collection="p.deathRateIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.deathRateNotIn != null">
+                AND death_rate NOT IN
+                <foreach collection="p.deathRateNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+
+            <!-- ================== growth_rate ================== -->
+            <if test="p.growthRateEq  != null"> AND growth_rate =  #{p.growthRateEq}  </if>
+            <if test="p.growthRateGt  != null"> AND growth_rate &gt;  #{p.growthRateGt}  </if>
+            <if test="p.growthRateGte != null"> AND growth_rate &gt;= #{p.growthRateGte} </if>
+            <if test="p.growthRateLt  != null"> AND growth_rate &lt;  #{p.growthRateLt}  </if>
+            <if test="p.growthRateLte != null"> AND growth_rate &lt;= #{p.growthRateLte} </if>
+            <if test="p.growthRateNotEq != null"> AND growth_rate != #{p.growthRateNotEq} </if>
+
+            <if test="p.growthRateIn != null">
+                AND growth_rate IN
+                <foreach collection="p.growthRateIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="p.growthRateNotIn != null">
+                AND growth_rate NOT IN
+                <foreach collection="p.growthRateNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+    </sql>
+    <!-- ========== 查询列表 ========== -->
+    <select id="selectByCondition"
+            resultMap="PopulationRegionDtoMap"
+            parameterType="map">
+        SELECT
+        t.name,
+        t.level,
+        t.year,
+        t.population,
+        t.birth_population,
+        t.death_population,
+        t.birth_rate,
+        t.death_rate,
+        t.growth_rate
+        FROM (
+        SELECT
+        ri.name,
+        ri.level,
+        pn.year,
+        pb.population,
+        pn.birth_population,
+        pn.death_population,
+        pn.birth_rate,
+        pn.death_rate,
+        pn.growth_rate
+        FROM reginal_information ri
+        JOIN population_natural_change_by_district pn
+        ON ri.regin_id = pn.regin_id
+        JOIN population_by_district pb
+        ON ri.regin_id = pb.region_id  <!-- 保证同一年 -->
+        ) t
+        <include refid="dynamicWhere"/>
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}         <!-- ⚠️ 请自行确保安全 -->
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- ========== 统计总数 ========== -->
+    <select id="countByCondition"
+            parameterType="map"
+            resultType="int">
+        SELECT COUNT(1)
+        FROM (
+        SELECT
+        ri.name,
+        ri.level,
+        pn.year,
+        pb.population,
+        pn.birth_population,
+        pn.death_population,
+        pn.birth_rate,
+        pn.death_rate,
+        pn.growth_rate
+        FROM reginal_information ri
+        JOIN population_natural_change_by_district pn ON ri.regin_id = pn.regin_id
+        JOIN population_by_district pb ON ri.regin_id = pb.region_id
+        ) t
+        <include refid="dynamicWhere"/>
+    </select>
+
+</mapper>

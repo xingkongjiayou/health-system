@@ -26,6 +26,8 @@ public class PopulationController {
     private PopulationGenderService populationGenderService;
     @Autowired
     private PopulationResidentService populationResidentService;
+    @Autowired
+    private PopulationRegionService populationRegionService;
 
     @PostMapping("/basic")
     public CommonResponse<ResultVO<PopulationBasic>> queryPopulation(@RequestBody QueryDTO queryDTO) {
@@ -50,5 +52,10 @@ public class PopulationController {
     @PostMapping("/resident")
     public CommonResponse<ResultVO<PopulationResident>> queryPopulationResident(@RequestBody QueryDTO queryDTO) {
         return CommonResponse.createForSuccess(populationResidentService.query(queryDTO));
+    }
+
+    @PostMapping("/region")
+    public CommonResponse<ResultVO<PopulationRegion>> queryPopulationRegion(@RequestBody QueryDTO queryDTO) {
+        return CommonResponse.createForSuccess(populationRegionService.query(queryDTO));
     }
 }
