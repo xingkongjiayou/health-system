@@ -6,7 +6,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PopulationChange {
-    private Long id;
     private Integer year;
     private Integer births;
     private Double birthRate;

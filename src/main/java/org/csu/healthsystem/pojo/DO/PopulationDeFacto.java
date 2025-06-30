@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PopulationDeFacto {
-    private Long id;
     private Integer year;
     private Double ruralPopulation;
     private Double urbanPopulation;

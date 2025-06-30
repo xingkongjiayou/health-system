@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PopulationGender {
-    private Long id;
     private Integer year;
     private Double malePopulation;
     private Double femalePopulation;

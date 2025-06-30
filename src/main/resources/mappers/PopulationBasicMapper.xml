@@ -202,7 +202,7 @@
             resultMap="PopulationBasicMap"
             parameterType="map">
         SELECT
-        id, year,
+         year,
         total_households, urban_households, county_households,
         total_population, urban_population, county_population
         FROM population_basic
