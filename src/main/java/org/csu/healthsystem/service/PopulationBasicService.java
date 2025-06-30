@@ -16,8 +16,8 @@ public class PopulationBasicService extends BaseQueryService<PopulationBasic>{
     public Set<String> getAllowedColumns() {
         return Set.of(
                 "year",
-                "total_households", "urban_households", "county_households",
-                "total_population", "urban_population", "county_population"
+                "totalHouseholds", "urbanHouseholds", "countyHouseholds",
+                "totalPopulation", "urbanPopulation", "countyPopulation"
         );
     }
 

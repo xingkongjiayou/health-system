@@ -18,8 +18,8 @@ public class PopulationResidentService extends BaseQueryService<PopulationReside
     public Set<String> getAllowedColumns() {
         return Set.of(
                 "year",
-                "resident_population", "urban_resident", "rural_resident",
-                "urbanization_rate"
+                "residentPopulation", "urbanResident", "ruralResident",
+                "urbanizationRate"
         );
     }
 

@@ -18,8 +18,8 @@ public class PopulationChangeService extends BaseQueryService<PopulationChange> 
     public Set<String> getAllowedColumns() {
         return Set.of(
                 "year",
-                "births", "birthrate", "deaths",
-                "deathRate", "natural_increase", "natural_increase_rate"
+                "births", "birthRate", "deaths",
+                "deathRate", "naturalIncrease", "naturalIncreaseRate"
         );
     }
 

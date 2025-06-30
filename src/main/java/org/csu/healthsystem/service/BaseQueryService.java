@@ -52,10 +52,19 @@ public abstract class BaseQueryService<T> {
             if(!getAllowedColumns().contains(col) || cond==null) return;
 
             if(cond.getEq()  != null) m.put(col + "Eq",  cond.getEq());
+            if (cond.getNotEq()  != null) m.put(col + "NotEq",  cond.getNotEq());
             if(cond.getGt()  != null) m.put(col + "Gt",  cond.getGt());
             if(cond.getGte() != null) m.put(col + "Gte", cond.getGte());
             if(cond.getLt()  != null) m.put(col + "Lt",  cond.getLt());
             if(cond.getLte() != null) m.put(col + "Lte", cond.getLte());
+            if (cond.getIn() != null && !cond.getIn().isEmpty()) {
+                m.put(col + "In", cond.getIn());
+            }
+            if (cond.getNotIn()  != null && !cond.getNotIn().isEmpty())
+                m.put(col + "NotIn",  cond.getNotIn());
+
+            if (cond.getLike()    != null) m.put(col + "Like",    cond.getLike());
+            if (cond.getNotLike() != null) m.put(col + "NotLike", cond.getNotLike());
         });
         return m;
     }
@@ -64,12 +73,15 @@ public abstract class BaseQueryService<T> {
         if(sort == null || sort.isEmpty()) return null;
         return sort.stream()
                 .filter(s -> getAllowedColumns().contains(camelToSnake(s.getField())))
-                .map(s -> camelToSnake(s.getField()) + " " +
+                .map(s -> camelToSnakeTrue(s.getField()) + " " +
                         ("desc".equalsIgnoreCase(s.getOrder()) ? "DESC" : "ASC"))
                 .collect(Collectors.joining(", "));
     }
     /** 驼峰转下划线 */
     public String camelToSnake(String s) {
+        return s/*.replaceAll("([A-Z])", "_$1").toLowerCase()*/;
+    }
+    public String camelToSnakeTrue(String s) {
         return s.replaceAll("([A-Z])", "_$1").toLowerCase();
     }
 

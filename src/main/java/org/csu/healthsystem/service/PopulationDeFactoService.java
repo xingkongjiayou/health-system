@@ -18,7 +18,7 @@ public class PopulationDeFactoService extends BaseQueryService<PopulationDeFacto
     public Set<String> getAllowedColumns() {
         return Set.of(
                 "year",
-                "rural_population", "urban_population"
+                "ruralPopulation", "urbanPopulation"
         );
     }
 

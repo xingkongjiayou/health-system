@@ -18,8 +18,7 @@ public class PopulationGenderService extends BaseQueryService<PopulationGender> 
     public Set<String> getAllowedColumns() {
         return Set.of(
                 "year",
-                "births", "birthrate", "deaths",
-                "deathRate", "natural_increase", "natural_increase_rate"
+                "malePopulation", "femalePopulation", "genderRatio"
         );
     }
 
