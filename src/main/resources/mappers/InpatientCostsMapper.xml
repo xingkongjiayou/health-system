@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.csu.healthsystem.util.InpatientCostsDao">
+    <select id="getAllInpatientCostStatistics" resultType="org.csu.healthsystem.pojo.VO.InpatientCostStatisticsVO">
+        SELECT
+            ic.id,
+            ic.hospital_id AS hospitalId,
+            hs.hospital_level AS hospitalLevel,
+            ic.total_fee AS totalFee,
+            ic.bed_fee AS bedFee,
+            ic.medicine_fee AS medicineFee,
+            ic.treatment_fee AS treatmentFee,
+            ROUND(ic.bed_fee / ic.total_fee * 100, 1) AS bedRatio,
+            ROUND(ic.medicine_fee / ic.total_fee * 100, 1) AS medicineRatio,
+            ROUND(ic.treatment_fee / ic.total_fee * 100, 1) AS treatmentRatio
+        FROM inpatient_costs ic
+                 LEFT JOIN hospital_statistics hs ON ic.hospital_id = hs.id
+    </select>
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.healthsystem.util.HealthPersonCategoryDao">
+    <select id="getAll" resultType="org.csu.healthsystem.pojo.DO.HealthPersonCategory">
+        SELECT id, year, health_personnel AS healthPersonnel, licensed_physician AS licensedPhysician,
+            nurse, pharmacist, total
+        FROM health_person_category
+    </select>
+</mapper>
