@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.healthsystem.util.DataExportDao">
+    <select id="exportData" resultType="map">
+        <choose>
+            <when test="fields != null and fields.size() > 0">
+                SELECT
+                <foreach collection="fields" item="field" separator=",">
+                    ${field}
+                </foreach>
+            </when>
+            <otherwise>
+                SELECT *
+            </otherwise>
+        </choose>
+        FROM ${table}
+        <where>
+            <if test="filters != null">
+                <if test="filters.startYear != null">
+                    AND year &gt;= #{filters.startYear}
+                </if>
+                <if test="filters.endYear != null">
+                    AND year &lt;= #{filters.endYear}
+                </if>
+                <!-- 只有当 hasRegionId==true 时才拼接 region_id 条件，避免无此字段的表报错 -->
+                <if test="filters.hasRegionId != null and filters.hasRegionId and filters.regions != null and filters.regions.size() > 0">
+                    AND region_id IN
+                    <foreach collection="filters.regions" item="region" open="(" separator="," close=")">
+                        #{region}
+                    </foreach>
+                </if>
+            </if>
+        </where>
+    </select>
+</mapper>

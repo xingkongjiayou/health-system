@@ -2,12 +2,12 @@ package org.csu.healthsystem.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.csu.healthsystem.util.DataImportDao;
 import org.csu.healthsystem.pojo.VO.DataImportResultVO;
 import org.csu.healthsystem.pojo.VO.ImportErrorDetail;
 import org.csu.healthsystem.util.CsvUtil;
 import org.csu.healthsystem.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +22,7 @@ import java.util.Map;
 public class DataImportService {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private DataImportDao dataImportDao;
 
 
     public DataImportResultVO importData(MultipartFile file, String dataType, String importMode) {
@@ -36,7 +36,7 @@ public class DataImportService {
 
         if ("replace".equalsIgnoreCase(importMode)) {
             String table = getTableName(dataType);
-            jdbcTemplate.execute("TRUNCATE TABLE " + table);
+            dataImportDao.truncateTable(table);
         }
 
         for (int i = 0; i < dataList.size(); i++) {
@@ -105,49 +105,22 @@ public class DataImportService {
     private void insertRow(String dataType, Map<String, Object> row) {
         switch (dataType) {
             case "population":
-                jdbcTemplate.update(
-                        "INSERT INTO population_basic (year, total_households, urban_households, county_households, total_population, urban_population, county_population) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                        row.get("year"), row.get("total_households"), row.get("urban_households"),
-                        row.get("county_households"), row.get("total_population"),
-                        row.get("urban_population"), row.get("county_population")
-                );
+                dataImportDao.insertPopulation(row);
                 break;
             case "institution":
-                jdbcTemplate.update(
-                        "INSERT INTO institution_category_stats (year, hospital, community_health, health_center, cdc, mch, total) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                        row.get("year"), row.get("hospital"), row.get("community_health"),
-                        row.get("health_center"), row.get("cdc"), row.get("mch"), row.get("total")
-                );
+                dataImportDao.insertInstitution(row);
                 break;
             case "personnel":
-                jdbcTemplate.update(
-                        "INSERT INTO health_person_category (year, health_personnel, licensed_physician, nurse, pharmacist, total) VALUES (?, ?, ?, ?, ?, ?)",
-                        row.get("year"), row.get("health_personnel"), row.get("licensed_physician"),
-                        row.get("nurse"), row.get("pharmacist"), row.get("total")
-                );
+                dataImportDao.insertPersonnel(row);
                 break;
             case "bed":
-                jdbcTemplate.update(
-                        "INSERT INTO health_bed_category (year, hospital, community_health, health_center, total) VALUES (?, ?, ?, ?, ?)",
-                        row.get("year"), row.get("hospital"), row.get("community_health"),
-                        row.get("health_center"), row.get("total")
-                );
+                dataImportDao.insertBed(row);
                 break;
             case "service":
-                jdbcTemplate.update(
-                        "INSERT INTO hospital_service_statistics (type_name, outpatient_visits, emergency_visits, referrals, transfer_out, bed_utilization_rate, avg_length_of_stay) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                        row.get("type_name"), row.get("outpatient_visits"), row.get("emergency_visits"),
-                        row.get("referrals"), row.get("transfer_out"),
-                        row.get("bed_utilization_rate"), row.get("avg_length_of_stay")
-                );
+                dataImportDao.insertService(row);
                 break;
             case "cost":
-                // 这里只以 outpatient_costs 为例，如需 inpatient_costs 可自行扩展
-                jdbcTemplate.update(
-                        "INSERT INTO outpatient_costs (hospital_id, total_fee, medicine_fee, exam_fee, treatment_fee) VALUES (?, ?, ?, ?, ?)",
-                        row.get("hospital_id"), row.get("total_fee"), row.get("medicine_fee"),
-                        row.get("exam_fee"), row.get("treatment_fee")
-                );
+                dataImportDao.insertCost(row);
                 break;
             default:
                 throw new RuntimeException("不支持的数据类型: " + dataType);
@@ -157,54 +130,22 @@ public class DataImportService {
     private void updateRow(String dataType, Map<String, Object> row) {
         switch (dataType) {
             case "population":
-                jdbcTemplate.update(
-                        "UPDATE population_basic SET total_households=?, urban_households=?, county_households=?, total_population=?, urban_population=?, county_population=? WHERE year=?",
-                        row.get("total_households"), row.get("urban_households"),
-                        row.get("county_households"), row.get("total_population"),
-                        row.get("urban_population"), row.get("county_population"),
-                        row.get("year")
-                );
+                dataImportDao.updatePopulation(row);
                 break;
             case "institution":
-                jdbcTemplate.update(
-                        "UPDATE institution_category_stats SET hospital=?, community_health=?, health_center=?, cdc=?, mch=?, total=? WHERE year=?",
-                        row.get("hospital"), row.get("community_health"),
-                        row.get("health_center"), row.get("cdc"), row.get("mch"), row.get("total"),
-                        row.get("year")
-                );
+                dataImportDao.updateInstitution(row);
                 break;
             case "personnel":
-                jdbcTemplate.update(
-                        "UPDATE health_person_category SET health_personnel=?, licensed_physician=?, nurse=?, pharmacist=?, total=? WHERE year=?",
-                        row.get("health_personnel"), row.get("licensed_physician"),
-                        row.get("nurse"), row.get("pharmacist"), row.get("total"),
-                        row.get("year")
-                );
+                dataImportDao.updatePersonnel(row);
                 break;
             case "bed":
-                jdbcTemplate.update(
-                        "UPDATE health_bed_category SET hospital=?, community_health=?, health_center=?, total=? WHERE year=?",
-                        row.get("hospital"), row.get("community_health"),
-                        row.get("health_center"), row.get("total"),
-                        row.get("year")
-                );
+                dataImportDao.updateBed(row);
                 break;
             case "service":
-                jdbcTemplate.update(
-                        "UPDATE hospital_service_statistics SET outpatient_visits=?, emergency_visits=?, referrals=?, transfer_out=?, bed_utilization_rate=?, avg_length_of_stay=? WHERE type_name=?",
-                        row.get("outpatient_visits"), row.get("emergency_visits"),
-                        row.get("referrals"), row.get("transfer_out"),
-                        row.get("bed_utilization_rate"), row.get("avg_length_of_stay"),
-                        row.get("type_name")
-                );
+                dataImportDao.updateService(row);
                 break;
             case "cost":
-                jdbcTemplate.update(
-                        "UPDATE outpatient_costs SET total_fee=?, medicine_fee=?, exam_fee=?, treatment_fee=? WHERE hospital_id=?",
-                        row.get("total_fee"), row.get("medicine_fee"),
-                        row.get("exam_fee"), row.get("treatment_fee"),
-                        row.get("hospital_id")
-                );
+                dataImportDao.updateCost(row);
                 break;
             default:
                 throw new RuntimeException("不支持的数据类型: " + dataType);
