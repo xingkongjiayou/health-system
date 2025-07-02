@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.healthsystem.util.DataCleanDao">
+
+    <!--
+      新增：如果 keyFields 为空（即所有字段都不存在），则不执行 SQL，避免拼接出错。
+      建议在 service 层过滤 keyFields 和 field，只传实际存在的字段。
+    -->
+    <delete id="removeDuplicates">
+        <if test="keyFields != null and keyFields.size() > 0">
+            DELETE t1 FROM ${table} t1
+            INNER JOIN ${table} t2
+            ON
+            <foreach collection="keyFields" item="k" separator=" AND ">
+                t1.${k} = t2.${k}
+            </foreach>
+            AND t1.id &gt; t2.id
+        </if>
+    </delete>
+
+    <update id="fillMissingValues">
+        <if test="field != null and field != ''">
+            UPDATE ${table}
+            SET ${field} = #{defaultValue}
+            WHERE ${field} IS NULL
+        </if>
+    </update>
+
+</mapper>

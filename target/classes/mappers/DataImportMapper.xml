@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.healthsystem.util.DataImportDao">
+    <insert id="insertPopulation" parameterType="map">
+        INSERT INTO population_basic (year, total_households, urban_households, county_households, total_population, urban_population, county_population)
+        VALUES (#{row.year}, #{row.total_households}, #{row.urban_households}, #{row.county_households}, #{row.total_population}, #{row.urban_population}, #{row.county_population})
+    </insert>
+    <update id="updatePopulation" parameterType="map">
+        UPDATE population_basic SET total_households=#{row.total_households}, urban_households=#{row.urban_households}, county_households=#{row.county_households}, total_population=#{row.total_population}, urban_population=#{row.urban_population}, county_population=#{row.county_population} WHERE year=#{row.year}
+    </update>
+    <insert id="insertInstitution" parameterType="map">
+        INSERT INTO institution_category_stats (year, hospital, community_health, health_center, cdc, mch, total)
+        VALUES (#{row.year}, #{row.hospital}, #{row.community_health}, #{row.health_center}, #{row.cdc}, #{row.mch}, #{row.total})
+    </insert>
+    <update id="updateInstitution" parameterType="map">
+        UPDATE institution_category_stats SET hospital=#{row.hospital}, community_health=#{row.community_health}, health_center=#{row.health_center}, cdc=#{row.cdc}, mch=#{row.mch}, total=#{row.total} WHERE year=#{row.year}
+    </update>
+    <insert id="insertPersonnel" parameterType="map">
+        INSERT INTO health_person_category (year, health_personnel, licensed_physician, nurse, pharmacist, total)
+        VALUES (#{row.year}, #{row.health_personnel}, #{row.licensed_physician}, #{row.nurse}, #{row.pharmacist}, #{row.total})
+    </insert>
+    <update id="updatePersonnel" parameterType="map">
+        UPDATE health_person_category SET health_personnel=#{row.health_personnel}, licensed_physician=#{row.licensed_physician}, nurse=#{row.nurse}, pharmacist=#{row.pharmacist}, total=#{row.total} WHERE year=#{row.year}
+    </update>
+    <insert id="insertBed" parameterType="map">
+        INSERT INTO health_bed_category (year, hospital, community_health, health_center, total)
+        VALUES (#{row.year}, #{row.hospital}, #{row.community_health}, #{row.health_center}, #{row.total})
+    </insert>
+    <update id="updateBed" parameterType="map">
+        UPDATE health_bed_category SET hospital=#{row.hospital}, community_health=#{row.community_health}, health_center=#{row.health_center}, total=#{row.total} WHERE year=#{row.year}
+    </update>
+    <insert id="insertService" parameterType="map">
+        INSERT INTO hospital_service_statistics (type_name, outpatient_visits, emergency_visits, referrals, transfer_out, bed_utilization_rate, avg_length_of_stay)
+        VALUES (#{row.type_name}, #{row.outpatient_visits}, #{row.emergency_visits}, #{row.referrals}, #{row.transfer_out}, #{row.bed_utilization_rate}, #{row.avg_length_of_stay})
+    </insert>
+    <update id="updateService" parameterType="map">
+        UPDATE hospital_service_statistics SET outpatient_visits=#{row.outpatient_visits}, emergency_visits=#{row.emergency_visits}, referrals=#{row.referrals}, transfer_out=#{row.transfer_out}, bed_utilization_rate=#{row.bed_utilization_rate}, avg_length_of_stay=#{row.avg_length_of_stay} WHERE type_name=#{row.type_name}
+    </update>
+    <insert id="insertCost" parameterType="map">
+        INSERT INTO outpatient_costs (hospital_id, total_fee, medicine_fee, exam_fee, treatment_fee)
+        VALUES (#{row.hospital_id}, #{row.total_fee}, #{row.medicine_fee}, #{row.exam_fee}, #{row.treatment_fee})
+    </insert>
+    <update id="updateCost" parameterType="map">
+        UPDATE outpatient_costs SET total_fee=#{row.total_fee}, medicine_fee=#{row.medicine_fee}, exam_fee=#{row.exam_fee}, treatment_fee=#{row.treatment_fee} WHERE hospital_id=#{row.hospital_id}
+    </update>
+    <update id="truncateTable">
+        TRUNCATE TABLE ${table}
+    </update>
+</mapper>

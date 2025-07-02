@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.healthsystem.util.DataTagDao">
+    <select id="getAllTags" resultType="org.csu.healthsystem.pojo.VO.DataTagVO">
+        SELECT
+            id,
+            tag_name AS tagName,
+            tag_code AS tagCode,
+            tag_type AS tagType,
+            color,
+            description,
+            DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS createTime
+        FROM data_tag
+        ORDER BY id
+    </select>
+    <insert id="insertTag" parameterType="org.csu.healthsystem.pojo.DO.DataTag" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO data_tag
+            (tag_name, tag_code, tag_type, color, description, create_time)
+        VALUES
+            (#{tagName}, #{tagCode}, #{tagType}, #{color}, #{description}, NOW())
+    </insert>
+    <insert id="batchAssignTags">
+        INSERT IGNORE INTO ${table}_tag_rel (data_id, tag_id)
+        VALUES
+        <foreach collection="dataIds" item="dataId" separator=",">
+            <foreach collection="tagIds" item="tagId" separator=",">
+                (#{dataId}, #{tagId})
+            </foreach>
+        </foreach>
+    </insert>
+</mapper>
