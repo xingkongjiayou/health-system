@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.healthsystem.util.InpatientCostsQueryDao">
+
+    <!-- 分桶聚合（total_fee字段） -->
+    <select id="totalBuckets" resultType="map">
+        SELECT
+        CASE
+        WHEN i.total_fee &lt; 10000 THEN '0-10000'
+        WHEN i.total_fee &gt;= 10000 AND i.total_fee &lt; 20000 THEN '10000-20000'
+        ELSE '20000+'
+        END AS `range`,
+        COUNT(*) AS `count`
+        FROM inpatient_costs i
+        LEFT JOIN hospital_statistics h ON i.hospital_id = h.id
+        <where>
+            <if test="p.idEq != null">AND i.id = #{p.idEq}</if>
+            <if test="p.idNotEq != null">AND i.id != #{p.idNotEq}</if>
+            <if test="p.idGt != null">AND i.id &gt; #{p.idGt}</if>
+            <if test="p.idGte != null">AND i.id &gt;= #{p.idGte}</if>
+            <if test="p.idLt != null">AND i.id &lt; #{p.idLt}</if>
+            <if test="p.idLte != null">AND i.id &lt;= #{p.idLte}</if>
+            <if test="p.idIn != null and p.idIn.size > 0">AND i.id IN
+                <foreach collection="p.idIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idNotIn != null and p.idNotIn.size > 0">AND i.id NOT IN
+                <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.hospitalIdEq != null">AND i.hospital_id = #{p.hospitalIdEq}</if>
+            <if test="p.hospitalIdNotEq != null">AND i.hospital_id != #{p.hospitalIdNotEq}</if>
+            <if test="p.hospitalIdIn != null and p.hospitalIdIn.size > 0">AND i.hospital_id IN
+                <foreach collection="p.hospitalIdIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.hospitalIdNotIn != null and p.hospitalIdNotIn.size > 0">AND i.hospital_id NOT IN
+                <foreach collection="p.hospitalIdNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.hospitalLevelEq != null">AND h.hospital_level = #{p.hospitalLevelEq}</if>
+            <if test="p.hospitalLevelNotEq != null">AND h.hospital_level != #{p.hospitalLevelNotEq}</if>
+            <if test="p.hospitalLevelLike != null">AND h.hospital_level LIKE CONCAT('%', #{p.hospitalLevelLike}, '%')</if>
+            <if test="p.hospitalLevelNotLike != null">AND h.hospital_level NOT LIKE CONCAT('%', #{p.hospitalLevelNotLike}, '%')</if>
+            <if test="p.hospitalLevelIn != null and p.hospitalLevelIn.size > 0">AND h.hospital_level IN
+                <foreach collection="p.hospitalLevelIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.hospitalLevelNotIn != null and p.hospitalLevelNotIn.size > 0">AND h.hospital_level NOT IN
+                <foreach collection="p.hospitalLevelNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.totalFeeEq != null">AND i.total_fee = #{p.totalFeeEq}</if>
+            <if test="p.totalFeeNotEq != null">AND i.total_fee != #{p.totalFeeNotEq}</if>
+            <if test="p.totalFeeGt != null">AND i.total_fee &gt; #{p.totalFeeGt}</if>
+            <if test="p.totalFeeGte != null">AND i.total_fee &gt;= #{p.totalFeeGte}</if>
+            <if test="p.totalFeeLt != null">AND i.total_fee &lt; #{p.totalFeeLt}</if>
+            <if test="p.totalFeeLte != null">AND i.total_fee &lt;= #{p.totalFeeLte}</if>
+            <if test="p.totalFeeIn != null and p.totalFeeIn.size > 0">AND i.total_fee IN
+                <foreach collection="p.totalFeeIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.totalFeeNotIn != null and p.totalFeeNotIn.size > 0">AND i.total_fee NOT IN
+                <foreach collection="p.totalFeeNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.totalFeeLike != null">AND i.total_fee LIKE CONCAT('%', #{p.totalFeeLike}, '%')</if>
+            <if test="p.totalFeeNotLike != null">AND i.total_fee NOT LIKE CONCAT('%', #{p.totalFeeNotLike}, '%')</if>
+            <if test="p.bedFeeEq != null">AND i.bed_fee = #{p.bedFeeEq}</if>
+            <if test="p.bedFeeGt != null">AND i.bed_fee &gt; #{p.bedFeeGt}</if>
+            <if test="p.bedFeeGte != null">AND i.bed_fee &gt;= #{p.bedFeeGte}</if>
+            <if test="p.bedFeeLt != null">AND i.bed_fee &lt; #{p.bedFeeLt}</if>
+            <if test="p.bedFeeLte != null">AND i.bed_fee &lt;= #{p.bedFeeLte}</if>
+            <if test="p.medicineFeeEq != null">AND i.medicine_fee = #{p.medicineFeeEq}</if>
+            <if test="p.medicineFeeGt != null">AND i.medicine_fee &gt; #{p.medicineFeeGt}</if>
+            <if test="p.medicineFeeGte != null">AND i.medicine_fee &gt;= #{p.medicineFeeGte}</if>
+            <if test="p.medicineFeeLt != null">AND i.medicine_fee &lt; #{p.medicineFeeLt}</if>
+            <if test="p.medicineFeeLte != null">AND i.medicine_fee &lt;= #{p.medicineFeeLte}</if>
+            <if test="p.treatmentFeeEq != null">AND i.treatment_fee = #{p.treatmentFeeEq}</if>
+            <if test="p.treatmentFeeGt != null">AND i.treatment_fee &gt; #{p.treatmentFeeGt}</if>
+            <if test="p.treatmentFeeGte != null">AND i.treatment_fee &gt;= #{p.treatmentFeeGte}</if>
+            <if test="p.treatmentFeeLt != null">AND i.treatment_fee &lt; #{p.treatmentFeeLt}</if>
+            <if test="p.treatmentFeeLte != null">AND i.treatment_fee &lt;= #{p.treatmentFeeLte}</if>
+        </where>
+        GROUP BY `range`
+    </select>
+
+    <!-- 年份直方图聚合（按医院分组或忽略） -->
+    <select id="yearHistogram" resultType="map">
+        SELECT h.id AS `key`, COUNT(*) AS `count`
+        FROM inpatient_costs i
+        LEFT JOIN hospital_statistics h ON i.hospital_id = h.id
+        <where>
+            <if test="p.hospitalLevelEq != null">AND h.hospital_level = #{p.hospitalLevelEq}</if>
+            <if test="p.totalFeeGte != null">AND i.total_fee &gt;= #{p.totalFeeGte}</if>
+        </where>
+        GROUP BY h.id
+    </select>
+
+    <!-- total_fee描述性统计聚合 -->
+    <select id="totalStats" resultType="map">
+        SELECT
+        MIN(i.total_fee) AS min,
+        MAX(i.total_fee) AS max,
+        AVG(i.total_fee) AS avg,
+        SUM(i.total_fee) AS sum,
+        COUNT(*) AS count
+        FROM inpatient_costs i
+        LEFT JOIN hospital_statistics h ON i.hospital_id = h.id
+        <where>
+            <if test="p.hospitalLevelEq != null">AND h.hospital_level = #{p.hospitalLevelEq}</if>
+            <if test="p.totalFeeGte != null">AND i.total_fee &gt;= #{p.totalFeeGte}</if>
+        </where>
+    </select>
+
+    <!-- 列表查询，支持所有条件、排序、分页 -->
+    <select id="selectByCondition" resultType="org.csu.healthsystem.pojo.VO.InpatientCostStatisticsVO">
+        SELECT
+            i.id,
+            i.hospital_id AS hospitalId,
+            h.hospital_level AS hospitalLevel,
+            i.total_fee AS totalFee,
+            i.bed_fee AS bedFee,
+            i.medicine_fee AS medicineFee,
+            i.treatment_fee AS treatmentFee,
+            ROUND(i.bed_fee * 100.0 / i.total_fee, 1) AS bedRatio,
+            ROUND(i.medicine_fee * 100.0 / i.total_fee, 1) AS medicineRatio,
+            ROUND(i.treatment_fee * 100.0 / i.total_fee, 1) AS treatmentRatio
+        FROM inpatient_costs i
+        LEFT JOIN hospital_statistics h ON i.hospital_id = h.id
+        <where>
+            <!-- id -->
+            <if test="p.idEq != null">AND i.id = #{p.idEq}</if>
+            <if test="p.idNotEq != null">AND i.id != #{p.idNotEq}</if>
+            <if test="p.idGt != null">AND i.id &gt; #{p.idGt}</if>
+            <if test="p.idGte != null">AND i.id &gt;= #{p.idGte}</if>
+            <if test="p.idLt != null">AND i.id &lt; #{p.idLt}</if>
+            <if test="p.idLte != null">AND i.id &lt;= #{p.idLte}</if>
+            <if test="p.idIn != null and p.idIn.size > 0">AND i.id IN
+                <foreach collection="p.idIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idNotIn != null and p.idNotIn.size > 0">AND i.id NOT IN
+                <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- hospitalId -->
+            <if test="p.hospitalIdEq != null">AND i.hospital_id = #{p.hospitalIdEq}</if>
+            <if test="p.hospitalIdNotEq != null">AND i.hospital_id != #{p.hospitalIdNotEq}</if>
+            <if test="p.hospitalIdIn != null and p.hospitalIdIn.size > 0">AND i.hospital_id IN
+                <foreach collection="p.hospitalIdIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.hospitalIdNotIn != null and p.hospitalIdNotIn.size > 0">AND i.hospital_id NOT IN
+                <foreach collection="p.hospitalIdNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- hospitalLevel -->
+            <if test="p.hospitalLevelEq != null">AND h.hospital_level = #{p.hospitalLevelEq}</if>
+            <if test="p.hospitalLevelNotEq != null">AND h.hospital_level != #{p.hospitalLevelNotEq}</if>
+            <if test="p.hospitalLevelLike != null">AND h.hospital_level LIKE CONCAT('%', #{p.hospitalLevelLike}, '%')</if>
+            <if test="p.hospitalLevelNotLike != null">AND h.hospital_level NOT LIKE CONCAT('%', #{p.hospitalLevelNotLike}, '%')</if>
+            <if test="p.hospitalLevelIn != null and p.hospitalLevelIn.size > 0">AND h.hospital_level IN
+                <foreach collection="p.hospitalLevelIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.hospitalLevelNotIn != null and p.hospitalLevelNotIn.size > 0">AND h.hospital_level NOT IN
+                <foreach collection="p.hospitalLevelNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- totalFee -->
+            <if test="p.totalFeeEq != null">AND i.total_fee = #{p.totalFeeEq}</if>
+            <if test="p.totalFeeNotEq != null">AND i.total_fee != #{p.totalFeeNotEq}</if>
+            <if test="p.totalFeeGt != null">AND i.total_fee &gt; #{p.totalFeeGt}</if>
+            <if test="p.totalFeeGte != null">AND i.total_fee &gt;= #{p.totalFeeGte}</if>
+            <if test="p.totalFeeLt != null">AND i.total_fee &lt; #{p.totalFeeLt}</if>
+            <if test="p.totalFeeLte != null">AND i.total_fee &lt;= #{p.totalFeeLte}</if>
+            <if test="p.totalFeeIn != null and p.totalFeeIn.size > 0">AND i.total_fee IN
+                <foreach collection="p.totalFeeIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.totalFeeNotIn != null and p.totalFeeNotIn.size > 0">AND i.total_fee NOT IN
+                <foreach collection="p.totalFeeNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- bedFee -->
+            <if test="p.bedFeeEq != null">AND i.bed_fee = #{p.bedFeeEq}</if>
+            <if test="p.bedFeeNotEq != null">AND i.bed_fee != #{p.bedFeeNotEq}</if>
+            <if test="p.bedFeeGt != null">AND i.bed_fee &gt; #{p.bedFeeGt}</if>
+            <if test="p.bedFeeGte != null">AND i.bed_fee &gt;= #{p.bedFeeGte}</if>
+            <if test="p.bedFeeLt != null">AND i.bed_fee &lt; #{p.bedFeeLt}</if>
+            <if test="p.bedFeeLte != null">AND i.bed_fee &lt;= #{p.bedFeeLte}</if>
+            <if test="p.bedFeeIn != null and p.bedFeeIn.size > 0">AND i.bed_fee IN
+                <foreach collection="p.bedFeeIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.bedFeeNotIn != null and p.bedFeeNotIn.size > 0">AND i.bed_fee NOT IN
+                <foreach collection="p.bedFeeNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- medicineFee -->
+            <if test="p.medicineFeeEq != null">AND i.medicine_fee = #{p.medicineFeeEq}</if>
+            <if test="p.medicineFeeNotEq != null">AND i.medicine_fee != #{p.medicineFeeNotEq}</if>
+            <if test="p.medicineFeeGt != null">AND i.medicine_fee &gt; #{p.medicineFeeGt}</if>
+            <if test="p.medicineFeeGte != null">AND i.medicine_fee &gt;= #{p.medicineFeeGte}</if>
+            <if test="p.medicineFeeLt != null">AND i.medicine_fee &lt; #{p.medicineFeeLt}</if>
+            <if test="p.medicineFeeLte != null">AND i.medicine_fee &lt;= #{p.medicineFeeLte}</if>
+            <if test="p.medicineFeeIn != null and p.medicineFeeIn.size > 0">AND i.medicine_fee IN
+                <foreach collection="p.medicineFeeIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.medicineFeeNotIn != null and p.medicineFeeNotIn.size > 0">AND i.medicine_fee NOT IN
+                <foreach collection="p.medicineFeeNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- treatmentFee -->
+            <if test="p.treatmentFeeEq != null">AND i.treatment_fee = #{p.treatmentFeeEq}</if>
+            <if test="p.treatmentFeeNotEq != null">AND i.treatment_fee != #{p.treatmentFeeNotEq}</if>
+            <if test="p.treatmentFeeGt != null">AND i.treatment_fee &gt; #{p.treatmentFeeGt}</if>
+            <if test="p.treatmentFeeGte != null">AND i.treatment_fee &gt;= #{p.treatmentFeeGte}</if>
+            <if test="p.treatmentFeeLt != null">AND i.treatment_fee &lt; #{p.treatmentFeeLt}</if>
+            <if test="p.treatmentFeeLte != null">AND i.treatment_fee &lt;= #{p.treatmentFeeLte}</if>
+            <if test="p.treatmentFeeIn != null and p.treatmentFeeIn.size > 0">AND i.treatment_fee IN
+                <foreach collection="p.treatmentFeeIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.treatmentFeeNotIn != null and p.treatmentFeeNotIn.size > 0">AND i.treatment_fee NOT IN
+                <foreach collection="p.treatmentFeeNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 统计总数 -->
+    <select id="countByCondition" resultType="int">
+        SELECT COUNT(*)
+        FROM inpatient_costs i
+        LEFT JOIN hospital_statistics h ON i.hospital_id = h.id
+        <where>
+            <!-- id -->
+            <if test="p.idEq != null">AND i.id = #{p.idEq}</if>
+            <if test="p.idNotEq != null">AND i.id != #{p.idNotEq}</if>
+            <if test="p.idGt != null">AND i.id &gt; #{p.idGt}</if>
+            <if test="p.idGte != null">AND i.id &gt;= #{p.idGte}</if>
+            <if test="p.idLt != null">AND i.id &lt; #{p.idLt}</if>
+            <if test="p.idLte != null">AND i.id &lt;= #{p.idLte}</if>
+            <if test="p.idIn != null and p.idIn.size > 0">AND i.id IN
+                <foreach collection="p.idIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idNotIn != null and p.idNotIn.size > 0">AND i.id NOT IN
+                <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- hospitalId -->
+            <if test="p.hospitalIdEq != null">AND i.hospital_id = #{p.hospitalIdEq}</if>
+            <if test="p.hospitalIdNotEq != null">AND i.hospital_id != #{p.hospitalIdNotEq}</if>
+            <if test="p.hospitalIdIn != null and p.hospitalIdIn.size > 0">AND i.hospital_id IN
+                <foreach collection="p.hospitalIdIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.hospitalIdNotIn != null and p.hospitalIdNotIn.size > 0">AND i.hospital_id NOT IN
+                <foreach collection="p.hospitalIdNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- hospitalLevel -->
+            <if test="p.hospitalLevelEq != null">AND h.hospital_level = #{p.hospitalLevelEq}</if>
+            <if test="p.hospitalLevelNotEq != null">AND h.hospital_level != #{p.hospitalLevelNotEq}</if>
+            <if test="p.hospitalLevelLike != null">AND h.hospital_level LIKE CONCAT('%', #{p.hospitalLevelLike}, '%')</if>
+            <if test="p.hospitalLevelNotLike != null">AND h.hospital_level NOT LIKE CONCAT('%', #{p.hospitalLevelNotLike}, '%')</if>
+            <if test="p.hospitalLevelIn != null and p.hospitalLevelIn.size > 0">AND h.hospital_level IN
+                <foreach collection="p.hospitalLevelIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.hospitalLevelNotIn != null and p.hospitalLevelNotIn.size > 0">AND h.hospital_level NOT IN
+                <foreach collection="p.hospitalLevelNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- totalFee -->
+            <if test="p.totalFeeEq != null">AND i.total_fee = #{p.totalFeeEq}</if>
+            <if test="p.totalFeeNotEq != null">AND i.total_fee != #{p.totalFeeNotEq}</if>
+            <if test="p.totalFeeGt != null">AND i.total_fee &gt; #{p.totalFeeGt}</if>
+            <if test="p.totalFeeGte != null">AND i.total_fee &gt;= #{p.totalFeeGte}</if>
+            <if test="p.totalFeeLt != null">AND i.total_fee &lt; #{p.totalFeeLt}</if>
+            <if test="p.totalFeeLte != null">AND i.total_fee &lt;= #{p.totalFeeLte}</if>
+            <if test="p.totalFeeIn != null and p.totalFeeIn.size > 0">AND i.total_fee IN
+                <foreach collection="p.totalFeeIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.totalFeeNotIn != null and p.totalFeeNotIn.size > 0">AND i.total_fee NOT IN
+                <foreach collection="p.totalFeeNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- bedFee -->
+            <if test="p.bedFeeEq != null">AND i.bed_fee = #{p.bedFeeEq}</if>
+            <if test="p.bedFeeNotEq != null">AND i.bed_fee != #{p.bedFeeNotEq}</if>
+            <if test="p.bedFeeGt != null">AND i.bed_fee &gt; #{p.bedFeeGt}</if>
+            <if test="p.bedFeeGte != null">AND i.bed_fee &gt;= #{p.bedFeeGte}</if>
+            <if test="p.bedFeeLt != null">AND i.bed_fee &lt; #{p.bedFeeLt}</if>
+            <if test="p.bedFeeLte != null">AND i.bed_fee &lt;= #{p.bedFeeLte}</if>
+            <if test="p.bedFeeIn != null and p.bedFeeIn.size > 0">AND i.bed_fee IN
+                <foreach collection="p.bedFeeIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.bedFeeNotIn != null and p.bedFeeNotIn.size > 0">AND i.bed_fee NOT IN
+                <foreach collection="p.bedFeeNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- medicineFee -->
+            <if test="p.medicineFeeEq != null">AND i.medicine_fee = #{p.medicineFeeEq}</if>
+            <if test="p.medicineFeeNotEq != null">AND i.medicine_fee != #{p.medicineFeeNotEq}</if>
+            <if test="p.medicineFeeGt != null">AND i.medicine_fee &gt; #{p.medicineFeeGt}</if>
+            <if test="p.medicineFeeGte != null">AND i.medicine_fee &gt;= #{p.medicineFeeGte}</if>
+            <if test="p.medicineFeeLt != null">AND i.medicine_fee &lt; #{p.medicineFeeLt}</if>
+            <if test="p.medicineFeeLte != null">AND i.medicine_fee &lt;= #{p.medicineFeeLte}</if>
+            <if test="p.medicineFeeIn != null and p.medicineFeeIn.size > 0">AND i.medicine_fee IN
+                <foreach collection="p.medicineFeeIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.medicineFeeNotIn != null and p.medicineFeeNotIn.size > 0">AND i.medicine_fee NOT IN
+                <foreach collection="p.medicineFeeNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <!-- treatmentFee -->
+            <if test="p.treatmentFeeEq != null">AND i.treatment_fee = #{p.treatmentFeeEq}</if>
+            <if test="p.treatmentFeeNotEq != null">AND i.treatment_fee != #{p.treatmentFeeNotEq}</if>
+            <if test="p.treatmentFeeGt != null">AND i.treatment_fee &gt; #{p.treatmentFeeGt}</if>
+            <if test="p.treatmentFeeGte != null">AND i.treatment_fee &gt;= #{p.treatmentFeeGte}</if>
+            <if test="p.treatmentFeeLt != null">AND i.treatment_fee &lt; #{p.treatmentFeeLt}</if>
+            <if test="p.treatmentFeeLte != null">AND i.treatment_fee &lt;= #{p.treatmentFeeLte}</if>
+            <if test="p.treatmentFeeIn != null and p.treatmentFeeIn.size > 0">AND i.treatment_fee IN
+                <foreach collection="p.treatmentFeeIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.treatmentFeeNotIn != null and p.treatmentFeeNotIn.size > 0">AND i.treatment_fee NOT IN
+                <foreach collection="p.treatmentFeeNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

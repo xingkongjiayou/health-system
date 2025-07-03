@@ -4,13 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.csu.healthsystem.common.CommonResponse;
 import org.csu.healthsystem.pojo.DO.HealthBedCategory;
 import org.csu.healthsystem.pojo.DO.TotalBedCount;
+import org.csu.healthsystem.pojo.DTO.QueryDTO;
 import org.csu.healthsystem.pojo.VO.BedUtilizationAnalysisVO;
+import org.csu.healthsystem.pojo.VO.ResultVO;
 import org.csu.healthsystem.service.BedService;
+import org.csu.healthsystem.service.HealthBedCategoryQueryService;
+import org.csu.healthsystem.service.TotalBedCountQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ import java.util.List;
 public class BedController {
     @Autowired
     private BedService bedService;
+    @Autowired
+    private HealthBedCategoryQueryService healthBedCategoryQueryService;
 
     @GetMapping("/category-stats")
     public CommonResponse<List<HealthBedCategory>> getCategoryStats() {
@@ -37,5 +40,18 @@ public class BedController {
             @RequestParam String hospitalType) {
         BedUtilizationAnalysisVO vo = bedService.getBedUtilizationAnalysis(year, hospitalType);
         return CommonResponse.createForSuccess(vo);
+    }
+    @PostMapping("/category-stats/query")
+    public CommonResponse<ResultVO<HealthBedCategory>> queryCategoryStats(@RequestBody QueryDTO queryDTO) {
+        ResultVO<HealthBedCategory> result = healthBedCategoryQueryService.query(queryDTO);
+        return CommonResponse.createForSuccess(result);
+    }
+    @Autowired
+    private TotalBedCountQueryService totalBedCountQueryService;
+
+    @PostMapping("/total-count/query")
+    public CommonResponse<ResultVO<TotalBedCount>> queryTotalCount(@RequestBody QueryDTO queryDTO) {
+        ResultVO<TotalBedCount> result = totalBedCountQueryService.query(queryDTO);
+        return CommonResponse.createForSuccess(result);
     }
 }
