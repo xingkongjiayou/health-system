@@ -3,7 +3,9 @@ package org.csu.healthsystem.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.csu.healthsystem.pojo.DO.ArimaParameter;
+import org.csu.healthsystem.pojo.DO.NeuroProphetParameter;
 import org.csu.healthsystem.pojo.DO.SarimaParameter;
+import org.csu.healthsystem.pojo.DO.TbatsParameter;
 import org.csu.healthsystem.pojo.PO.PrePO;
 import org.csu.healthsystem.pojo.VO.PredictVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,42 @@ public class Client {
         List<Double> forecast=objectMapper.readValue(response.body(),new TypeReference<>(){});
         PredictVO predictVO=new PredictVO();
         predictVO.setSeries(sarimapo.getSeries());
+        predictVO.setForecast(forecast);
+        return predictVO;
+    }
+
+    public PredictVO neuroprophet(PrePO<NeuroProphetParameter> prePO) throws IOException, InterruptedException {
+        String url = "http://localhost:5000/predict/neuroprophet";
+        String json=objectMapper.writeValueAsString(prePO);
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")   // ←✅ 拼写修正
+                .header("Accept", "application/json")        // 可选：声明期待 JSON
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        HttpResponse<String> response=client.send(request,HttpResponse.BodyHandlers.ofString());
+        List<Double> forecast=objectMapper.readValue(response.body(),new TypeReference<>(){});
+        PredictVO predictVO=new PredictVO();
+        predictVO.setSeries(prePO.getSeries());
+        predictVO.setForecast(forecast);
+        return predictVO;
+    }
+
+    public PredictVO tbats(PrePO<TbatsParameter> po) throws IOException, InterruptedException {
+        String url = "http://localhost:5000/predict/tbats";
+        String json=objectMapper.writeValueAsString(po);
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")   // ←✅ 拼写修正
+                .header("Accept", "application/json")        // 可选：声明期待 JSON
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        HttpResponse<String> response=client.send(request,HttpResponse.BodyHandlers.ofString());
+        List<Double> forecast=objectMapper.readValue(response.body(),new TypeReference<>(){});
+        PredictVO predictVO=new PredictVO();
+        predictVO.setSeries(po.getSeries());
         predictVO.setForecast(forecast);
         return predictVO;
     }
