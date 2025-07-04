@@ -70,29 +70,29 @@
             <if test="p.birthsLike != null">     AND births LIKE     #{p.birthsLike}     </if>
             <if test="p.birthsNotLike != null">  AND births NOT LIKE #{p.birthsNotLike}  </if>
             <!-- ==== birth_rate ==== -->
-            <if test="p.birth_rateEq  != null"> AND birth_rate =  #{p.birth_rateEq}  </if>
-            <if test="p.birth_rateGt  != null"> AND birth_rate &gt;  #{p.birth_rateGt} </if>
-            <if test="p.birth_rateGte != null"> AND birth_rate &gt;= #{p.birth_rateGte}</if>
-            <if test="p.birth_rateLt  != null"> AND birth_rate &lt;  #{p.birth_rateLt} </if>
-            <if test="p.birth_rateLte != null"> AND birth_rate &lt;= #{p.birth_rateLte}</if>
-            <if test="p.birth_rateNotEq != null"> AND birth_rate != #{p.birth_rateNotEq} </if>
+            <if test="p.birthRateEq  != null"> AND birth_rate =  #{p.birthRateEq}  </if>
+            <if test="p.birthRateGt  != null"> AND birth_rate &gt;  #{p.birthRateGt} </if>
+            <if test="p.birthRateGte != null"> AND birth_rate &gt;= #{p.birthRateGte}</if>
+            <if test="p.birthRateLt  != null"> AND birth_rate &lt;  #{p.birthRateLt} </if>
+            <if test="p.birthRateLte != null"> AND birth_rate &lt;= #{p.birthRateLte}</if>
+            <if test="p.birthRateNotEq != null"> AND birth_rate != #{p.birthRateNotEq} </if>
 
-            <if test="p.birth_rateIn != null">
+            <if test="p.birthRateIn != null">
                 AND birth_rate IN
-                <foreach collection="p.birth_rateIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.birthRateIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.birth_rateNotIn != null">
+            <if test="p.birthRateNotIn != null">
                 AND birth_rate NOT IN
-                <foreach collection="p.birth_rateNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.birthRateNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.birth_rateLike != null">     AND birth_rate LIKE     #{p.birth_rateLike}     </if>
-            <if test="p.birth_rateNotLike != null">  AND birth_rate NOT LIKE #{p.birth_rateNotLike}  </if>
+            <if test="p.birthRateLike != null">     AND birth_rate LIKE     #{p.birthRateLike}     </if>
+            <if test="p.birthRateNotLike != null">  AND birth_rate NOT LIKE #{p.birthRateNotLike}  </if>
 
             <!-- ==== deaths ==== -->
             <if test="p.deathsEq  != null"> AND deaths =  #{p.deathsEq}  </if>
@@ -119,77 +119,77 @@
             <if test="p.deathsLike != null">     AND deaths LIKE     #{p.deathsLike}     </if>
             <if test="p.deathsNotLike != null">  AND deaths NOT LIKE #{p.deathsNotLike}  </if>
             <!-- ==== death_rate ==== -->
-            <if test="p.death_rateEq  != null"> AND death_rate =  #{p.death_rateEq}  </if>
-            <if test="p.death_rateGt  != null"> AND death_rate &gt;  #{p.death_rateGt} </if>
-            <if test="p.death_rateGte != null"> AND death_rate &gt;= #{p.death_rateGte}</if>
-            <if test="p.death_rateLt  != null"> AND death_rate &lt;  #{p.death_rateLt} </if>
-            <if test="p.death_rateLte != null"> AND death_rate &lt;= #{p.death_rateLte}</if>
-            <if test="p.death_rateNotEq != null"> AND death_rate != #{p.death_rateNotEq} </if>
+            <if test="p.deathRateEq  != null"> AND death_rate =  #{p.deathRateEq}  </if>
+            <if test="p.deathRateGt  != null"> AND death_rate &gt;  #{p.deathRateGt} </if>
+            <if test="p.deathRateGte != null"> AND death_rate &gt;= #{p.deathRateGte}</if>
+            <if test="p.deathRateLt  != null"> AND death_rate &lt;  #{p.deathRateLt} </if>
+            <if test="p.deathRateLte != null"> AND death_rate &lt;= #{p.deathRateLte}</if>
+            <if test="p.deathRateNotEq != null"> AND death_rate != #{p.deathRateNotEq} </if>
 
-            <if test="p.death_rateIn != null">
+            <if test="p.deathRateIn != null">
                 AND death_rate IN
-                <foreach collection="p.death_rateIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.deathRateIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.death_rateNotIn != null">
+            <if test="p.deathRateNotIn != null">
                 AND death_rate NOT IN
-                <foreach collection="p.death_rateNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.deathRateNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.death_rateLike != null">     AND death_rate LIKE     #{p.death_rateLike}     </if>
-            <if test="p.death_rateNotLike != null">  AND death_rate NOT LIKE #{p.death_rateNotLike}  </if>
+            <if test="p.deathRateLike != null">     AND death_rate LIKE     #{p.deathRateLike}     </if>
+            <if test="p.deathRateNotLike != null">  AND death_rate NOT LIKE #{p.deathRateNotLike}  </if>
             <!-- ==== natural_increase ==== -->
-            <if test="p.natural_increaseEq  != null"> AND natural_increase =  #{p.natural_increaseEq}  </if>
-            <if test="p.natural_increaseGt  != null"> AND natural_increase &gt;  #{p.natural_increaseGt} </if>
-            <if test="p.natural_increaseGte != null"> AND natural_increase &gt;= #{p.natural_increaseGte}</if>
-            <if test="p.natural_increaseLt  != null"> AND natural_increase &lt;  #{p.natural_increaseLt} </if>
-            <if test="p.natural_increaseLte != null"> AND natural_increase &lt;= #{p.natural_increaseLte}</if>
-            <if test="p.natural_increaseNotEq != null"> AND natural_increase != #{p.natural_increaseNotEq} </if>
+            <if test="p.naturalIncreaseEq  != null"> AND natural_increase =  #{p.naturalIncreaseEq}  </if>
+            <if test="p.naturalIncreaseGt  != null"> AND natural_increase &gt;  #{p.naturalIncreaseGt} </if>
+            <if test="p.naturalIncreaseGte != null"> AND natural_increase &gt;= #{p.naturalIncreaseGte}</if>
+            <if test="p.naturalIncreaseLt  != null"> AND natural_increase &lt;  #{p.naturalIncreaseLt} </if>
+            <if test="p.naturalIncreaseLte != null"> AND natural_increase &lt;= #{p.naturalIncreaseLte}</if>
+            <if test="p.naturalIncreaseNotEq != null"> AND natural_increase != #{p.naturalIncreaseNotEq} </if>
 
-            <if test="p.natural_increaseIn != null">
+            <if test="p.naturalIncreaseIn != null">
                 AND natural_increase IN
-                <foreach collection="p.natural_increaseIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.naturalIncreaseIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.natural_increaseNotIn != null">
+            <if test="p.naturalIncreaseNotIn != null">
                 AND natural_increase NOT IN
-                <foreach collection="p.natural_increaseNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.naturalIncreaseNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.natural_increaseLike != null">     AND natural_increase LIKE     #{p.natural_increaseLike}     </if>
-            <if test="p.natural_increaseNotLike != null">  AND natural_increase NOT LIKE #{p.natural_increaseNotLike}  </if>
+            <if test="p.naturalIncreaseLike != null">     AND natural_increase LIKE     #{p.naturalIncreaseLike}     </if>
+            <if test="p.naturalIncreaseNotLike != null">  AND natural_increase NOT LIKE #{p.naturalIncreaseNotLike}  </if>
             <!-- ==== natural_increase_rate ==== -->
-            <if test="p.natural_increase_rateEq  != null"> AND natural_increase_rate =  #{p.natural_increase_rateEq}  </if>
-            <if test="p.natural_increase_rateGt  != null"> AND natural_increase_rate &gt;  #{p.natural_increase_rateGt} </if>
-            <if test="p.natural_increase_rateGte != null"> AND natural_increase_rate &gt;= #{p.natural_increase_rateGte}</if>
-            <if test="p.natural_increase_rateLt  != null"> AND natural_increase_rate &lt;  #{p.natural_increase_rateLt} </if>
-            <if test="p.natural_increase_rateLte != null"> AND natural_increase_rate &lt;= #{p.natural_increase_rateLte}</if>
-            <if test="p.natural_increase_rateNotEq != null"> AND natural_increase_rate != #{p.natural_increase_rateNotEq} </if>
+            <if test="p.naturalIncrease_rateEq  != null"> AND natural_increase_rate =  #{p.naturalIncrease_rateEq}  </if>
+            <if test="p.naturalIncrease_rateGt  != null"> AND natural_increase_rate &gt;  #{p.naturalIncrease_rateGt} </if>
+            <if test="p.naturalIncrease_rateGte != null"> AND natural_increase_rate &gt;= #{p.naturalIncrease_rateGte}</if>
+            <if test="p.naturalIncrease_rateLt  != null"> AND natural_increase_rate &lt;  #{p.naturalIncrease_rateLt} </if>
+            <if test="p.naturalIncrease_rateLte != null"> AND natural_increase_rate &lt;= #{p.naturalIncrease_rateLte}</if>
+            <if test="p.naturalIncrease_rateNotEq != null"> AND natural_increase_rate != #{p.naturalIncrease_rateNotEq} </if>
 
-            <if test="p.natural_increase_rateIn != null">
+            <if test="p.naturalIncrease_rateIn != null">
                 AND natural_increase_rate IN
-                <foreach collection="p.natural_increase_rateIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.naturalIncrease_rateIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.natural_increase_rateNotIn != null">
+            <if test="p.naturalIncrease_rateNotIn != null">
                 AND natural_increase_rate NOT IN
-                <foreach collection="p.natural_increase_rateNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.naturalIncrease_rateNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.natural_increase_rateLike != null">     AND natural_increase_rate LIKE     #{p.natural_increase_rateLike}     </if>
-            <if test="p.natural_increase_rateNotLike != null">  AND natural_increase_rate NOT LIKE #{p.natural_increase_rateNotLike}  </if>
+            <if test="p.naturalIncrease_rateLike != null">     AND natural_increase_rate LIKE     #{p.naturalIncrease_rateLike}     </if>
+            <if test="p.naturalIncrease_rateNotLike != null">  AND natural_increase_rate NOT LIKE #{p.naturalIncrease_rateNotLike}  </if>
         </where>
     </sql>
 

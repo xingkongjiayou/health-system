@@ -50,7 +50,6 @@ public abstract class BaseQueryService<T> {
         filters.forEach((field, cond) -> {
             String col = camelToSnake(field);
             if(!getAllowedColumns().contains(col) || cond==null) return;
-
             if(cond.getEq()  != null) m.put(col + "Eq",  cond.getEq());
             if (cond.getNotEq()  != null) m.put(col + "NotEq",  cond.getNotEq());
             if(cond.getGt()  != null) m.put(col + "Gt",  cond.getGt());

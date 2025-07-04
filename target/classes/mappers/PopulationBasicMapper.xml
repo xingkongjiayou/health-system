@@ -46,155 +46,154 @@
             <if test="p.yearNotLike != null">  AND year NOT LIKE #{p.yearNotLike}  </if>
 
             <!-- ===== total_households ===== -->
-            <if test="p.total_householdsEq  != null"> AND total_households =  #{p.total_householdsEq}  </if>
-            <if test="p.total_householdsGt  != null"> AND total_households &gt;  #{p.total_householdsGt}  </if>
-            <if test="p.total_householdsGte != null"> AND total_households &gt;= #{p.total_householdsGte} </if>
-            <if test="p.total_householdsLt  != null"> AND total_households &lt;  #{p.total_householdsLt}  </if>
-            <if test="p.total_householdsLte != null"> AND total_households &lt;= #{p.total_householdsLte} </if>
-            <if test="p.total_householdsNotEq != null"> AND total_households != #{p.total_householdsNotEq} </if>
+            <if test="p.totalHouseholdsEq  != null"> AND total_households =  #{p.totalHouseholdsEq}  </if>
+            <if test="p.totalHouseholdsGt  != null"> AND total_households &gt;  #{p.totalHouseholdsGt}  </if>
+            <if test="p.totalHouseholdsGte != null"> AND total_households &gt;= #{p.totalHouseholdsGte} </if>
+            <if test="p.totalHouseholdsLt  != null"> AND total_households &lt;  #{p.totalHouseholdsLt}  </if>
+            <if test="p.totalHouseholdsLte != null"> AND total_households &lt;= #{p.totalHouseholdsLte} </if>
+            <if test="p.totalHouseholdsNotEq != null"> AND total_households != #{p.totalHouseholdsNotEq} </if>
 
-            <if test="p.total_householdsIn != null">
+            <if test="p.totalHouseholdsIn != null">
                 AND total_households IN
-                <foreach collection="p.total_householdsIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.totalHouseholdsIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.total_householdsNotIn != null">
+            <if test="p.totalHouseholdsNotIn != null">
                 AND total_households NOT IN
-                <foreach collection="p.total_householdsNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.totalHouseholdsNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.total_householdsLike != null">     AND total_households LIKE     #{p.total_householdsLike}     </if>
-            <if test="p.total_householdsNotLike != null">  AND total_households NOT LIKE #{p.total_householdsNotLike}  </if>
+            <if test="p.totalHouseholdsLike != null">     AND total_households LIKE     #{p.totalHouseholdsLike}     </if>
+            <if test="p.totalHouseholdsNotLike != null">  AND total_households NOT LIKE #{p.totalHouseholdsNotLike}  </if>
 
             <!-- ===== urban_households ===== -->
-            <if test="p.urban_householdsEq  != null"> AND urban_households =  #{p.urban_householdsEq}  </if>
-            <if test="p.urban_householdsGt  != null"> AND urban_households &gt;  #{p.urban_householdsGt}  </if>
-            <if test="p.urban_householdsGte != null"> AND urban_households &gt;= #{p.urban_householdsGte} </if>
-            <if test="p.urban_householdsLt  != null"> AND urban_households &lt;  #{p.urban_householdsLt}  </if>
-            <if test="p.urban_householdsLte != null"> AND urban_households &lt;= #{p.urban_householdsLte} </if>
-            <if test="p.urban_householdsNotEq != null"> AND urban_households != #{p.urban_householdsNotEq} </if>
+            <if test="p.urbanHouseholdsEq  != null"> AND urban_households =  #{p.urbanHouseholdsEq}  </if>
+            <if test="p.urbanHouseholdsGt  != null"> AND urban_households &gt;  #{p.urbanHouseholdsGt}  </if>
+            <if test="p.urbanHouseholdsGte != null"> AND urban_households &gt;= #{p.urbanHouseholdsGte} </if>
+            <if test="p.urbanHouseholdsLt  != null"> AND urban_households &lt;  #{p.urbanHouseholdsLt}  </if>
+            <if test="p.urbanHouseholdsLte != null"> AND urban_households &lt;= #{p.urbanHouseholdsLte} </if>
+            <if test="p.urbanHouseholdsNotEq != null"> AND urban_households != #{p.urbanHouseholdsNotEq} </if>
 
-            <if test="p.urban_householdsIn != null">
+            <if test="p.urbanHouseholdsIn != null">
                 AND urban_households IN
-                <foreach collection="p.urban_householdsIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.urbanHouseholdsIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.urban_householdsNotIn != null">
+            <if test="p.urbanHouseholdsNotIn != null">
                 AND urban_households NOT IN
-                <foreach collection="p.urban_householdsNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.urbanHouseholdsNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.urban_householdsLike != null">     AND urban_households LIKE     #{p.urban_householdsLike}     </if>
-            <if test="p.urban_householdsNotLike != null">  AND urban_households NOT LIKE #{p.urban_householdsNotLike}  </if>
+            <if test="p.urbanHouseholdsLike != null">     AND urban_households LIKE     #{p.urbanHouseholdsLike}     </if>
+            <if test="p.urbanHouseholdsNotLike != null">  AND urban_households NOT LIKE #{p.urbanHouseholdsNotLike}  </if>
 
             <!-- ===== county_households ===== -->
-            <if test="p.county_householdsEq  != null"> AND county_households =  #{p.county_householdsEq}  </if>
-            <if test="p.county_householdsGt  != null"> AND county_households &gt;  #{p.county_householdsGt}  </if>
-            <if test="p.county_householdsGte != null"> AND county_households &gt;= #{p.county_householdsGte} </if>
-            <if test="p.county_householdsLt  != null"> AND county_households &lt;  #{p.county_householdsLt}  </if>
-            <if test="p.county_householdsLte != null"> AND county_households &lt;= #{p.county_householdsLte} </if>
-            <if test="p.county_householdsNotEq != null"> AND county_households != #{p.county_householdsNotEq} </if>
+            <if test="p.countyHouseholdsEq  != null"> AND county_households =  #{p.countyHouseholdsEq}  </if>
+            <if test="p.countyHouseholdsGt  != null"> AND county_households &gt;  #{p.countyHouseholdsGt}  </if>
+            <if test="p.countyHouseholdsGte != null"> AND county_households &gt;= #{p.countyHouseholdsGte} </if>
+            <if test="p.countyHouseholdsLt  != null"> AND county_households &lt;  #{p.countyHouseholdsLt}  </if>
+            <if test="p.countyHouseholdsLte != null"> AND county_households &lt;= #{p.countyHouseholdsLte} </if>
+            <if test="p.countyHouseholdsNotEq != null"> AND county_households != #{p.countyHouseholdsNotEq} </if>
 
-            <if test="p.county_householdsIn != null">
+            <if test="p.countyHouseholdsIn != null">
                 AND county_households IN
-                <foreach collection="p.county_householdsIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.countyHouseholdsIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.county_householdsNotIn != null">
+            <if test="p.countyHouseholdsNotIn != null">
                 AND county_households NOT IN
-                <foreach collection="p.county_householdsNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.countyHouseholdsNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.county_householdsLike != null">     AND county_households LIKE     #{p.county_householdsLike}     </if>
-            <if test="p.county_householdsNotLike != null">  AND county_households NOT LIKE #{p.county_householdsNotLike}  </if>
+            <if test="p.countyHouseholdsLike != null">     AND county_households LIKE     #{p.countyHouseholdsLike}     </if>
+            <if test="p.countyHouseholdsNotLike != null">  AND county_households NOT LIKE #{p.countyHouseholdsNotLike}  </if>
 
             <!-- ===== total_population ===== -->
-            <if test="p.total_populationEq  != null"> AND total_population =  #{p.total_populationEq}  </if>
-            <if test="p.total_populationGt  != null"> AND total_population &gt;  #{p.total_populationGt}  </if>
-            <if test="p.total_populationGte != null"> AND total_population &gt;= #{p.total_populationGte} </if>
-            <if test="p.total_populationLt  != null"> AND total_population &lt;  #{p.total_populationLt}  </if>
-            <if test="p.total_populationLte != null"> AND total_population &lt;= #{p.total_populationLte} </if>
-            <if test="p.total_populationNotEq != null"> AND total_population != #{p.total_populationNotEq} </if>
+            <if test="p.totalPopulationEq  != null"> AND total_population =  #{p.totalPopulationEq}  </if>
+            <if test="p.totalPopulationGt  != null"> AND total_population &gt;  #{p.totalPopulationGt}  </if>
+            <if test="p.totalPopulationGte != null"> AND total_population &gt;= #{p.totalPopulationGte} </if>
+            <if test="p.totalPopulationLt  != null"> AND total_population &lt;  #{p.totalPopulationLt}  </if>
+            <if test="p.totalPopulationLte != null"> AND total_population &lt;= #{p.totalPopulationLte} </if>
+            <if test="p.totalPopulationNotEq != null"> AND total_population != #{p.totalPopulationNotEq} </if>
 
-            <if test="p.total_populationIn != null">
+            <if test="p.totalPopulationIn != null">
                 AND total_population IN
-                <foreach collection="p.total_populationIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.totalPopulationIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.total_populationNotIn != null">
+            <if test="p.totalPopulationNotIn != null">
                 AND total_population NOT IN
-                <foreach collection="p.total_populationNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.totalPopulationNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.total_populationLike != null">     AND total_population LIKE     #{p.total_populationLike}     </if>
-            <if test="p.total_populationNotLike != null">  AND total_population NOT LIKE #{p.total_populationNotLike}  </if>
+            <if test="p.totalPopulationLike != null">     AND total_population LIKE     #{p.totalPopulationLike}     </if>
+            <if test="p.totalPopulationNotLike != null">  AND total_population NOT LIKE #{p.totalPopulationNotLike}  </if>
 
             <!-- ===== urban_population ===== -->
-            <if test="p.urban_populationEq  != null"> AND urban_population =  #{p.urban_populationEq}  </if>
-            <if test="p.urban_populationGt  != null"> AND urban_population &gt;  #{p.urban_populationGt}  </if>
-            <if test="p.urban_populationGte != null"> AND urban_population &gt;= #{p.urban_populationGte} </if>
-            <if test="p.urban_populationLt  != null"> AND urban_population &lt;  #{p.urban_populationLt}  </if>
-            <if test="p.urban_populationLte != null"> AND urban_population &lt;= #{p.urban_populationLte} </if>
-            <if test="p.urban_populationNotEq != null"> AND urban_population != #{p.urban_populationNotEq} </if>
+            <if test="p.urbanPopulationEq  != null"> AND urban_population =  #{p.urbanPopulationEq}  </if>
+            <if test="p.urbanPopulationGt  != null"> AND urban_population &gt;  #{p.urbanPopulationGt}  </if>
+            <if test="p.urbanPopulationGte != null"> AND urban_population &gt;= #{p.urbanPopulationGte} </if>
+            <if test="p.urbanPopulationLt  != null"> AND urban_population &lt;  #{p.urbanPopulationLt}  </if>
+            <if test="p.urbanPopulationLte != null"> AND urban_population &lt;= #{p.urbanPopulationLte} </if>
+            <if test="p.urbanPopulationNotEq != null"> AND urban_population != #{p.urbanPopulationNotEq} </if>
 
-            <if test="p.urban_populationIn != null">
+            <if test="p.urbanPopulationIn != null">
                 AND urban_population IN
-                <foreach collection="p.urban_populationIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.urbanPopulationIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.urban_populationNotIn != null">
+            <if test="p.urbanPopulationNotIn != null">
                 AND urban_population NOT IN
-                <foreach collection="p.urban_populationNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.urbanPopulationNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.urban_populationLike != null">     AND urban_population LIKE     #{p.urban_populationLike}     </if>
-            <if test="p.urban_populationNotLike != null">  AND urban_population NOT LIKE #{p.urban_populationNotLike}  </if>
+            <if test="p.urbanPopulationLike != null">     AND urban_population LIKE     #{p.urbanPopulationLike}     </if>
+            <if test="p.urbanPopulationNotLike != null">  AND urban_population NOT LIKE #{p.urbanPopulationNotLike}  </if>
 
             <!-- ===== county_population ===== -->
-            <if test="p.county_populationEq  != null"> AND county_population =  #{p.county_populationEq}  </if>
-            <if test="p.county_populationGt  != null"> AND county_population &gt;  #{p.county_populationGt}  </if>
-            <if test="p.county_populationGte != null"> AND county_population &gt;= #{p.county_populationGte} </if>
-            <if test="p.county_populationLt  != null"> AND county_population &lt;  #{p.county_populationLt}  </if>
-            <if test="p.county_populationLte != null"> AND county_population &lt;= #{p.county_populationLte} </if>
-            <if test="p.county_populationNotEq != null"> AND county_population != #{p.county_populationNotEq} </if>
+            <if test="p.countyPopulationEq  != null"> AND county_population =  #{p.countyPopulationEq}  </if>
+            <if test="p.countyPopulationGt  != null"> AND county_population &gt;  #{p.countyPopulationGt}  </if>
+            <if test="p.countyPopulationGte != null"> AND county_population &gt;= #{p.countyPopulationGte} </if>
+            <if test="p.countyPopulationLt  != null"> AND county_population &lt;  #{p.countyPopulationLt}  </if>
+            <if test="p.countyPopulationLte != null"> AND county_population &lt;= #{p.countyPopulationLte} </if>
+            <if test="p.countyPopulationNotEq != null"> AND county_population != #{p.countyPopulationNotEq} </if>
 
-            <if test="p.county_populationIn != null">
+            <if test="p.countyPopulationIn != null">
                 AND county_population IN
-                <foreach collection="p.county_populationIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.countyPopulationIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.county_populationNotIn != null">
+            <if test="p.countyPopulationNotIn != null">
                 AND county_population NOT IN
-                <foreach collection="p.county_populationNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.countyPopulationNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.county_populationLike != null">     AND county_population LIKE     #{p.county_populationLike}     </if>
-            <if test="p.county_populationNotLike != null">  AND county_population NOT LIKE #{p.county_populationNotLike}  </if>
-            复制要领：
+            <if test="p.countyPopulationLike != null">     AND county_population LIKE     #{p.countyPopulationLike}     </if>
+            <if test="p.countyPopulationNotLike != null">  AND county_population NOT LIKE #{p.countyPopulationNotLike}  </if>
         </where>
     </sql>
     <!-- ========== 动态查询 ========== -->

@@ -42,80 +42,80 @@
             <if test="p.yearLike != null">     AND year LIKE     #{p.yearLike}     </if>
             <if test="p.yearNotLike != null">  AND year NOT LIKE #{p.yearNotLike}  </if>
             <!-- ===== male_population ===== -->
-            <if test="p.male_populationEq  != null"> AND male_population =  #{p.male_populationEq}  </if>
-            <if test="p.male_populationGt  != null"> AND male_population &gt;  #{p.male_populationGt}  </if>
-            <if test="p.male_populationGte != null"> AND male_population &gt;= #{p.male_populationGte} </if>
-            <if test="p.male_populationLt  != null"> AND male_population &lt;  #{p.male_populationLt}  </if>
-            <if test="p.male_populationLte != null"> AND male_population &lt;= #{p.male_populationLte} </if>
-            <if test="p.male_populationNotEq != null"> AND male_population != #{p.male_populationNotEq} </if>
+            <if test="p.malePopulationEq  != null"> AND male_population =  #{p.malePopulationEq}  </if>
+            <if test="p.malePopulationGt  != null"> AND male_population &gt;  #{p.malePopulationGt}  </if>
+            <if test="p.malePopulationGte != null"> AND male_population &gt;= #{p.malePopulationGte} </if>
+            <if test="p.malePopulationLt  != null"> AND male_population &lt;  #{p.malePopulationLt}  </if>
+            <if test="p.malePopulationLte != null"> AND male_population &lt;= #{p.malePopulationLte} </if>
+            <if test="p.malePopulationNotEq != null"> AND male_population != #{p.malePopulationNotEq} </if>
 
-            <if test="p.male_populationIn != null">
+            <if test="p.malePopulationIn != null">
                 AND male_population IN
-                <foreach collection="p.male_populationIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.malePopulationIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.male_populationNotIn != null">
+            <if test="p.malePopulationNotIn != null">
                 AND male_population NOT IN
-                <foreach collection="p.male_populationNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.malePopulationNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.male_populationLike != null">     AND male_population LIKE     #{p.male_populationLike}     </if>
-            <if test="p.male_populationNotLike != null">  AND male_population NOT LIKE #{p.male_populationNotLike}  </if>
+            <if test="p.malePopulationLike != null">     AND male_population LIKE     #{p.malePopulationLike}     </if>
+            <if test="p.malePopulationNotLike != null">  AND male_population NOT LIKE #{p.malePopulationNotLike}  </if>
 
 
             <!-- ===== female_population ===== -->
-            <if test="p.female_populationEq  != null"> AND female_population =  #{p.female_populationEq}  </if>
-            <if test="p.female_populationGt  != null"> AND female_population &gt;  #{p.female_populationGt}  </if>
-            <if test="p.female_populationGte != null"> AND female_population &gt;= #{p.female_populationGte} </if>
-            <if test="p.female_populationLt  != null"> AND female_population &lt;  #{p.female_populationLt}  </if>
-            <if test="p.female_populationLte != null"> AND female_population &lt;= #{p.female_populationLte} </if>
-            <if test="p.female_populationNotEq != null"> AND female_population != #{p.female_populationNotEq} </if>
+            <if test="p.femalePopulationEq  != null"> AND female_population =  #{p.femalePopulationEq}  </if>
+            <if test="p.femalePopulationGt  != null"> AND female_population &gt;  #{p.femalePopulationGt}  </if>
+            <if test="p.femalePopulationGte != null"> AND female_population &gt;= #{p.femalePopulationGte} </if>
+            <if test="p.femalePopulationLt  != null"> AND female_population &lt;  #{p.femalePopulationLt}  </if>
+            <if test="p.femalePopulationLte != null"> AND female_population &lt;= #{p.femalePopulationLte} </if>
+            <if test="p.femalePopulationNotEq != null"> AND female_population != #{p.femalePopulationNotEq} </if>
 
-            <if test="p.female_populationIn != null">
+            <if test="p.femalePopulationIn != null">
                 AND female_population IN
-                <foreach collection="p.female_populationIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.femalePopulationIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.female_populationNotIn != null">
+            <if test="p.femalePopulationNotIn != null">
                 AND female_population NOT IN
-                <foreach collection="p.female_populationNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.femalePopulationNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.female_populationLike != null">     AND female_population LIKE     #{p.female_populationLike}     </if>
-            <if test="p.female_populationNotLike != null">  AND female_population NOT LIKE #{p.female_populationNotLike}  </if>
+            <if test="p.femalePopulationLike != null">     AND female_population LIKE     #{p.femalePopulationLike}     </if>
+            <if test="p.femalePopulationNotLike != null">  AND female_population NOT LIKE #{p.femalePopulationNotLike}  </if>
 
             <!-- ===== gender_ratio ===== -->
-            <if test="p.gender_ratioEq  != null"> AND gender_ratio =  #{p.gender_ratioEq}  </if>
-            <if test="p.gender_ratioGt  != null"> AND gender_ratio &gt;  #{p.gender_ratioGt}  </if>
-            <if test="p.gender_ratioGte != null"> AND gender_ratio &gt;= #{p.gender_ratioGte} </if>
-            <if test="p.gender_ratioLt  != null"> AND gender_ratio &lt;  #{p.gender_ratioLt}  </if>
-            <if test="p.gender_ratioLte != null"> AND gender_ratio &lt;= #{p.gender_ratioLte} </if>
-            <if test="p.gender_ratioNotEq != null"> AND gender_ratio != #{p.gender_ratioNotEq} </if>
+            <if test="p.genderRatioEq  != null"> AND gender_ratio =  #{p.genderRatioEq}  </if>
+            <if test="p.genderRatioGt  != null"> AND gender_ratio &gt;  #{p.genderRatioGt}  </if>
+            <if test="p.genderRatioGte != null"> AND gender_ratio &gt;= #{p.genderRatioGte} </if>
+            <if test="p.genderRatioLt  != null"> AND gender_ratio &lt;  #{p.genderRatioLt}  </if>
+            <if test="p.genderRatioLte != null"> AND gender_ratio &lt;= #{p.genderRatioLte} </if>
+            <if test="p.genderRatioNotEq != null"> AND gender_ratio != #{p.genderRatioNotEq} </if>
 
-            <if test="p.gender_ratioIn != null">
+            <if test="p.genderRatioIn != null">
                 AND gender_ratio IN
-                <foreach collection="p.gender_ratioIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.genderRatioIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.gender_ratioNotIn != null">
+            <if test="p.genderRatioNotIn != null">
                 AND gender_ratio NOT IN
-                <foreach collection="p.gender_ratioNotIn" item="item" open="(" separator="," close=")">
+                <foreach collection="p.genderRatioNotIn" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
-            <if test="p.gender_ratioLike != null">     AND gender_ratio LIKE     #{p.gender_ratioLike}     </if>
-            <if test="p.gender_ratioNotLike != null">  AND gender_ratio NOT LIKE #{p.gender_ratioNotLike}  </if>
+            <if test="p.genderRatioLike != null">     AND gender_ratio LIKE     #{p.genderRatioLike}     </if>
+            <if test="p.genderRatioNotLike != null">  AND gender_ratio NOT LIKE #{p.genderRatioNotLike}  </if>
         </where>
     </sql>
 
