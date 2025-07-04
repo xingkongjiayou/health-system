@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.healthsystem.util.TotalBedCountQueryDao">
+
+    <!-- 分桶聚合（total字段） -->
+    <select id="totalBuckets" resultType="map">
+        <![CDATA[
+    SELECT
+        CASE
+            WHEN total_count < 10 THEN '0-10'
+            WHEN total_count >= 10 AND total_count < 20 THEN '10-20'
+            WHEN total_count >= 20 AND total_count < 30 THEN '20-30'
+            ELSE '30+'
+        END AS `range`,
+        COUNT(*) AS `count`
+    FROM total_bed_count
+    ]]>
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.totalGt != null">AND total &gt; #{p.totalGt}</if>
+            <if test="p.totalGte != null">AND total &gt;= #{p.totalGte}</if>
+            <if test="p.totalLt != null">AND total &lt; #{p.totalLt}</if>
+            <if test="p.totalLte != null">AND total &lt;= #{p.totalLte}</if>
+        </where>
+        GROUP BY `range`
+    </select>
+
+    <!-- 年份直方图聚合 -->
+    <select id="yearHistogram" resultType="map">
+        SELECT year AS `key`, COUNT(*) AS `count`
+        FROM total_bed_count
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+        </where>
+        GROUP BY year
+    </select>
+
+    <!-- total描述性统计聚合 -->
+    <select id="totalStats" resultType="map">
+        SELECT
+        MIN(total_count) AS min,
+        MAX(total_count) AS max,
+        AVG(total_count) AS avg,
+        SUM(total_count) AS sum,
+        COUNT(*) AS count
+        FROM total_bed_count
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+        </where>
+    </select>
+
+    <!-- 列表查询，支持所有条件、排序、分页 -->
+    <select id="selectByCondition" resultType="org.csu.healthsystem.pojo.DO.TotalBedCount">
+        SELECT id, year, total_count AS totalCount
+        FROM total_bed_count
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.idNotEq != null">AND id != #{p.idNotEq}</if>
+            <if test="p.idGt != null">AND id &gt; #{p.idGt}</if>
+            <if test="p.idGte != null">AND id &gt;= #{p.idGte}</if>
+            <if test="p.idLt != null">AND id &lt; #{p.idLt}</if>
+            <if test="p.idLte != null">AND id &lt;= #{p.idLte}</if>
+            <if test="p.idIn != null and p.idIn.size > 0">AND id IN
+                <foreach collection="p.idIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idNotIn != null and p.idNotIn.size > 0">AND id NOT IN
+                <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idLike != null">AND id LIKE CONCAT('%', #{p.idLike}, '%')</if>
+            <if test="p.idNotLike != null">AND id NOT LIKE CONCAT('%', #{p.idNotLike}, '%')</if>
+
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearLike != null">AND year LIKE CONCAT('%', #{p.yearLike}, '%')</if>
+            <if test="p.yearNotLike != null">AND year NOT LIKE CONCAT('%', #{p.yearNotLike}, '%')</if>
+
+            <if test="p.totalEq != null">AND total = #{p.totalEq}</if>
+            <if test="p.totalNotEq != null">AND total != #{p.totalNotEq}</if>
+            <if test="p.totalGt != null">AND total &gt; #{p.totalGt}</if>
+            <if test="p.totalGte != null">AND total &gt;= #{p.totalGte}</if>
+            <if test="p.totalLt != null">AND total &lt; #{p.totalLt}</if>
+            <if test="p.totalLte != null">AND total &lt;= #{p.totalLte}</if>
+            <if test="p.totalIn != null and p.totalIn.size > 0">AND total IN
+                <foreach collection="p.totalIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.totalNotIn != null and p.totalNotIn.size > 0">AND total NOT IN
+                <foreach collection="p.totalNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.totalLike != null">AND total LIKE CONCAT('%', #{p.totalLike}, '%')</if>
+            <if test="p.totalNotLike != null">AND total NOT LIKE CONCAT('%', #{p.totalNotLike}, '%')</if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 统计总数 -->
+    <select id="countByCondition" resultType="int">
+        SELECT COUNT(*) FROM total_bed_count
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+        </where>
+    </select>
+</mapper>

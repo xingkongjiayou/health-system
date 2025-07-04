@@ -40,7 +40,55 @@ public abstract class BaseQueryService<T> {
         ResultVO<T> resultVO = new ResultVO<>();
         resultVO.setRows(rows);
         resultVO.setPageInfo(pageInfo);
+        // 新增：聚合统计
+        resultVO.setAggregations(buildAggregations(params));
         return resultVO;
+    }
+
+    /**
+     * 构建聚合统计结果，自动调用DAO的yearHistogram、totalStats、totalBuckets等方法
+     */
+    protected Object buildAggregations(Map<String, Object> params) {
+        Map<String, Object> aggs = new HashMap<>();
+        try {
+            // 年份直方图
+            if (hasMethod(getDao(), "yearHistogram")) {
+                List<Map<String, Object>> yearHist = (List<Map<String, Object>>) getDao().getClass()
+                        .getMethod("yearHistogram", Map.class)
+                        .invoke(getDao(), params);
+                aggs.put("year_histogram", yearHist);
+            }
+            // 总量分桶
+            if (hasMethod(getDao(), "totalBuckets")) {
+                List<Map<String, Object>> totalBuckets = (List<Map<String, Object>>) getDao().getClass()
+                        .getMethod("totalBuckets", Map.class)
+                        .invoke(getDao(), params);
+                aggs.put("total_buckets", totalBuckets);
+            }
+            // 总量统计
+            if (hasMethod(getDao(), "totalStats")) {
+                Map<String, Object> totalStats = (Map<String, Object>) getDao().getClass()
+                        .getMethod("totalStats", Map.class)
+                        .invoke(getDao(), params);
+                aggs.put("total_stats", totalStats);
+            }
+        } catch (Exception e) {
+            Throwable cause = e.getCause();
+            if (cause != null) {
+                log.error("聚合统计组装异常: {}", cause.getMessage(), cause);
+            } else {
+                log.error("聚合统计组装异常", e);
+            }
+        }
+        return aggs;
+    }
+
+    /** 判断DAO是否有某方法 */
+    private boolean hasMethod(Object obj, String methodName) {
+        for (java.lang.reflect.Method m : obj.getClass().getMethods()) {
+            if (m.getName().equals(methodName)) return true;
+        }
+        return false;
     }
 
     private Map<String,Object> buildFilterMap(Map<String, Condition> filters){

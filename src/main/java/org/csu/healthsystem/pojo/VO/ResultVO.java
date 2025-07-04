@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class ResultVO<T> {
-    List<T> rows;
-    PageInfo pageInfo;
+    private List<T> rows;
+    private PageInfo pageInfo;
+    private Object aggregations;
 }

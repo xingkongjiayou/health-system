@@ -2,13 +2,13 @@ package org.csu.healthsystem.controller;
 
 import org.csu.healthsystem.common.CommonResponse;
 import org.csu.healthsystem.pojo.DO.HospitalServiceStatistics;
+import org.csu.healthsystem.pojo.DTO.QueryDTO;
+import org.csu.healthsystem.pojo.VO.ResultVO;
 import org.csu.healthsystem.pojo.VO.ServiceQualityAnalysisVO;
+import org.csu.healthsystem.service.HospitalServiceStatisticsQueryService;
 import org.csu.healthsystem.service.ServiceStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +29,13 @@ public class ServiceStatisticsController {
             @RequestParam String analysisType) {
         ServiceQualityAnalysisVO vo = serviceStatisticsService.getServiceQualityAnalysis(hospitalType, analysisType);
         return CommonResponse.createForSuccess(vo);
+    }
+    @Autowired
+    private HospitalServiceStatisticsQueryService service;
+
+    @PostMapping("/hospital-service/query")
+    public CommonResponse<ResultVO<HospitalServiceStatistics>> query(@RequestBody QueryDTO queryDTO) {
+        ResultVO<HospitalServiceStatistics> result = service.query(queryDTO);
+        return CommonResponse.createForSuccess(result);
     }
 }

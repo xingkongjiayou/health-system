@@ -6,13 +6,13 @@ import java.util.List;
 
 @Data
 public class Condition {
-    private Integer eq;
-    private Integer gt;
-    private Integer gte;
-    private Integer lt;
-    private Integer lte;
+    private String eq;
+    private String gt;
+    private String gte;
+    private String lt;
+    private String lte;
     private List<Object> in;
-    private Integer notEq;
+    private String notEq;
     private List<Object> notIn;
     private String like;     // 例如 "%abc%"
     private String notLike;
