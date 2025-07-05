@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Service("PopulationChangeService")
 @RequiredArgsConstructor
-public class PopulationChangeService extends BaseQueryService<PopulationChange> {
+public class PopulationChangeService extends BaseQueryService2<PopulationChange> {
     private final PopulationChangeDao populationChangeDao;
     @Override
     public Set<String> getAllowedColumns() {

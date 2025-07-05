@@ -40,5 +40,6 @@
         FROM information_schema.columns
         WHERE
         column_name = #{toPredict}
+            LIMIT 1
     </select>
 </mapper>

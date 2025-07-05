@@ -257,7 +257,8 @@
         JOIN population_natural_change_by_district pn
         ON ri.regin_id = pn.regin_id
         JOIN population_by_district pb
-        ON ri.regin_id = pb.region_id  <!-- 保证同一年 -->
+        ON ri.regin_id = pb.region_id
+        AND pn.year     = pb.year<!-- 保证同一年 -->
         ) t
         <include refid="dynamicWhere"/>
         <if test="orderBy != null">
@@ -288,5 +289,49 @@
         ) t
         <include refid="dynamicWhere"/>
     </select>
+    <select id="histogramAllNumerics"
+            parameterType="map"
+            resultType="map">
 
+        <foreach collection="columns" item="col" separator=" UNION ALL ">
+
+            <!-- ▍① 直方图：只返回 count -->
+            SELECT
+            #{col}                                    AS field,
+            CONCAT(rng, '-', rng + #{step} - 1)       AS bucket,
+            COUNT(*)                                  AS cnt,
+            NULL                                      AS avgVal,
+            NULL                                      AS minVal,
+            NULL                                      AS maxVal,
+            NULL                                      AS sumVal
+            FROM (
+            SELECT FLOOR(${col} / #{step}) * #{step}  AS rng
+            FROM   population_natural_change_by_district
+            <include refid="dynamicWhere"/>
+            ) t
+            GROUP BY rng
+
+            UNION ALL
+
+            <!-- ▍② 整体统计：给出过滤区间的 avg/min/max/sum -->
+            SELECT
+            #{col}                                    AS field,
+            '__stats__'                               AS bucket,   -- 特殊标记
+            NULL                                      AS cnt,
+            AVG(${col})                               AS avgVal,
+            MIN(${col})                               AS minVal,
+            MAX(${col})                               AS maxVal,
+            SUM(${col})                               AS sumVal
+            FROM   population_natural_change_by_district
+            <include refid="dynamicWhere"/>
+
+        </foreach>
+
+        ORDER BY field,                -- 同一字段排到一起
+        CASE bucket
+        WHEN '__stats__' THEN 1e18          -- 让整体统计排在最后
+        ELSE 0
+        END,
+        bucket
+    </select>
 </mapper>

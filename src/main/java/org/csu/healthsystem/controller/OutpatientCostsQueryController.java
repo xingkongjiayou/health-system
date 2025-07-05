@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 @RestController
@@ -21,7 +22,7 @@ public class OutpatientCostsQueryController {
     private OutpatientCostsQueryService outpatientCostsQueryService;
 
     @PostMapping("/query")
-    public CommonResponse<ResultVO<OutpatientCostStatisticsVO>> query(@RequestBody QueryDTO queryDTO) {
+    public CommonResponse<ResultVO<OutpatientCostStatisticsVO>> query(@RequestBody QueryDTO queryDTO) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
             // 针对 hospitalLevel 字段做类型转换
             Map<String, Condition> filters = queryDTO.getFilters();
             if (filters != null && filters.containsKey("hospitalLevel")) {

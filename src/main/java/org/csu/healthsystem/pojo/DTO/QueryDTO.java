@@ -14,6 +14,8 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QueryDTO {
+    private List<String> columns;
+    private Double step;
     private Map<String, Condition> filters;
     private List<SortOrder> sort;
     private PageInfo pageInfo;

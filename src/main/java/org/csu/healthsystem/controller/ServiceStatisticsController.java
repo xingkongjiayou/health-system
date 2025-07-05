@@ -10,6 +10,7 @@ import org.csu.healthsystem.service.ServiceStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
@@ -34,7 +35,7 @@ public class ServiceStatisticsController {
     private HospitalServiceStatisticsQueryService service;
 
     @PostMapping("/hospital-service/query")
-    public CommonResponse<ResultVO<HospitalServiceStatistics>> query(@RequestBody QueryDTO queryDTO) {
+    public CommonResponse<ResultVO<HospitalServiceStatistics>> query(@RequestBody QueryDTO queryDTO) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         ResultVO<HospitalServiceStatistics> result = service.query(queryDTO);
         return CommonResponse.createForSuccess(result);
     }

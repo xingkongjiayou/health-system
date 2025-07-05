@@ -32,6 +32,7 @@ public class SecurityConfig {
                 )
                 .logout(LogoutConfigurer::permitAll);
         return http.build();
+
     }
 
     @Autowired

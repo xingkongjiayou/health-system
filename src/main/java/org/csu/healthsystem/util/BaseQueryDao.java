@@ -12,5 +12,7 @@ public interface BaseQueryDao<T> {
     List<Map<String, Object>> yearHistogram(@Param("p") Map<String, Object> filters);
     Map<String, Object> totalStats(@Param("p") Map<String, Object> filters);
     List<Map<String, Object>> totalBuckets(@Param("p") Map<String, Object> filters);
-
+    List<Map<String,Object>> histogramAllNumerics(@Param("columns") List<String> columns,
+                                                  @Param("step")    Integer      step,
+                                                  @Param("p")       Map<String,Object> filters);
 }

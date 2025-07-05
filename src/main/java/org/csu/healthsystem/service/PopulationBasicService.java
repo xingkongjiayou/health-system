@@ -6,12 +6,21 @@ import org.csu.healthsystem.util.BaseQueryDao;
 import org.csu.healthsystem.util.PopulationBasicDao;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedHashMap;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service("PopulationBasicService")
 @RequiredArgsConstructor
-public class PopulationBasicService extends BaseQueryService<PopulationBasic>{
+public class PopulationBasicService extends BaseQueryService2<PopulationBasic> {
     private final PopulationBasicDao populationBasicDao;
+
     @Override
     public Set<String> getAllowedColumns() {
         return Set.of(
@@ -25,4 +34,6 @@ public class PopulationBasicService extends BaseQueryService<PopulationBasic>{
     public BaseQueryDao<PopulationBasic> getDao() {
         return populationBasicDao;
     }
+
+
 }

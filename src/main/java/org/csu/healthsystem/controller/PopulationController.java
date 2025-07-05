@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.InvocationTargetException;
+
 @Slf4j
 @RequestMapping("/api/population")
 @RestController
@@ -30,7 +32,7 @@ public class PopulationController {
     private PopulationRegionService populationRegionService;
 
     @PostMapping("/basic")
-    public CommonResponse<ResultVO<PopulationBasic>> queryPopulation(@RequestBody QueryDTO queryDTO) {
+    public CommonResponse<ResultVO<PopulationBasic>> queryPopulation(@RequestBody QueryDTO queryDTO){
         return CommonResponse.createForSuccess(populationBasicService.query(queryDTO));
     }
 

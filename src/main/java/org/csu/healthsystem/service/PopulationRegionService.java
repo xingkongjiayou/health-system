@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Service("PopulationRegionService")
 @RequiredArgsConstructor
-public class PopulationRegionService extends BaseQueryService<PopulationRegion> {
+public class PopulationRegionService extends BaseQueryService2<PopulationRegion> {
     private final PopulationRegionDao populationRegionDao;
     @Override
     public Set<String> getAllowedColumns() {
