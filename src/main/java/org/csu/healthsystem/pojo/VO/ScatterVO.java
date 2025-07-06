@@ -11,5 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ScatterVO {
     List<String> columns;
+    List<List<Double>> rows;
     Double correlation;
 }

@@ -47,7 +47,7 @@ public class CorrelationController {
         CorrelationVO correlationVO = client.heatmap(new CorrePO(toGet, rows));
         // 取两个变量的相关系数（矩阵对称，取[0][1]或[1][0]）
         Double corrValue = correlationVO.getCorrelations().get(0).get(1);
-        ScatterVO result = new ScatterVO(toGet,corrValue);
+        ScatterVO result = new ScatterVO(toGet,rows,corrValue);
         return CommonResponse.createForSuccess(result);
     }
 }
