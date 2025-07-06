@@ -67,6 +67,15 @@ public class BaseQueryOneService{
         return null;
     }
 
+    public List<Double> query(String req,Map<String,Condition> filters) {
+        Map<String,Object> params = buildFilterMap(filters);
+        if(getAllowedColumns().contains(req)) {
+            return getDao().selectOneByCondition(params, camelToSnakeTrue(req),
+                    getDao().selectTableByColumn(camelToSnakeTrue(req)));
+        }
+        return null;
+    }
+
     private Map<String,Object> buildFilterMap(Map<String, Condition> filters){
         Map<String,Object> m = new HashMap<>();
         if(filters == null) return m;
