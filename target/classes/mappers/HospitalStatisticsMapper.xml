@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.csu.healthsystem.util.HospitalStatisticsDao">
+
+    <!-- 结果映射 -->
+    <resultMap id="HospitalStatsMap" type="org.csu.healthsystem.pojo.DO.HospitalStatistics">
+        <result column="hospital_level"       property="hospitalLevel"/>
+        <result column="institution_count"    property="institutionCount"/>
+        <result column="visits_per_doctor"    property="visitsPerDoctor"/>
+        <result column="bed_days_per_doctor"  property="bedDaysPerDoctor"/>
+    </resultMap>
+
+    <!-- 动态 WHERE -->
+    <sql id="dynamicWhere">
+        <where>
+            <!-- ▍hospital_level：字符串可做等值/模糊/In 查询 -->
+            <if test="p.hospitalLevelEq   != null"> AND hospital_level =  #{p.hospitalLevelEq}   </if>
+            <if test="p.hospitalLevelNotEq!= null"> AND hospital_level != #{p.hospitalLevelNotEq}</if>
+
+            <if test="p.hospitalLevelLike   != null"> AND hospital_level LIKE  #{p.hospitalLevelLike}   </if>
+            <if test="p.hospitalLevelNotLike!= null"> AND hospital_level NOT LIKE #{p.hospitalLevelNotLike}</if>
+
+            <if test="p.hospitalLevelIn != null">
+                AND hospital_level IN
+                <foreach collection="p.hospitalLevelIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="p.hospitalLevelNotIn != null">
+                AND hospital_level NOT IN
+                <foreach collection="p.hospitalLevelNotIn" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <!-- ▍institution_count -->
+            <if test="p.institutionCountEq  != null"> AND institution_count =  #{p.institutionCountEq}  </if>
+            <if test="p.institutionCountGt  != null"> AND institution_count &gt;  #{p.institutionCountGt}  </if>
+            <if test="p.institutionCountGte != null"> AND institution_count &gt;= #{p.institutionCountGte} </if>
+            <if test="p.institutionCountLt  != null"> AND institution_count &lt;  #{p.institutionCountLt}  </if>
+            <if test="p.institutionCountLte != null"> AND institution_count &lt;= #{p.institutionCountLte} </if>
+            <if test="p.institutionCountNotEq != null"> AND institution_count != #{p.institutionCountNotEq} </if>
+
+            <!-- ▍visits_per_doctor -->
+            <if test="p.visitsPerDoctorEq  != null"> AND visits_per_doctor =  #{p.visitsPerDoctorEq}  </if>
+            <if test="p.visitsPerDoctorGt  != null"> AND visits_per_doctor &gt;  #{p.visitsPerDoctorGt}  </if>
+            <if test="p.visitsPerDoctorGte != null"> AND visits_per_doctor &gt;= #{p.visitsPerDoctorGte} </if>
+            <if test="p.visitsPerDoctorLt  != null"> AND visits_per_doctor &lt;  #{p.visitsPerDoctorLt}  </if>
+            <if test="p.visitsPerDoctorLte != null"> AND visits_per_doctor &lt;= #{p.visitsPerDoctorLte} </if>
+            <if test="p.visitsPerDoctorNotEq != null"> AND visits_per_doctor != #{p.visitsPerDoctorNotEq} </if>
+
+            <!-- ▍bed_days_per_doctor -->
+            <if test="p.bedDaysPerDoctorEq  != null"> AND bed_days_per_doctor =  #{p.bedDaysPerDoctorEq}  </if>
+            <if test="p.bedDaysPerDoctorGt  != null"> AND bed_days_per_doctor &gt;  #{p.bedDaysPerDoctorGt}  </if>
+            <if test="p.bedDaysPerDoctorGte != null"> AND bed_days_per_doctor &gt;= #{p.bedDaysPerDoctorGte} </if>
+            <if test="p.bedDaysPerDoctorLt  != null"> AND bed_days_per_doctor &lt;  #{p.bedDaysPerDoctorLt}  </if>
+            <if test="p.bedDaysPerDoctorLte != null"> AND bed_days_per_doctor &lt;= #{p.bedDaysPerDoctorLte} </if>
+            <if test="p.bedDaysPerDoctorNotEq != null"> AND bed_days_per_doctor != #{p.bedDaysPerDoctorNotEq} </if>
+        </where>
+    </sql>
+
+    <!-- ========= 动态查询 ========= -->
+    <select id="selectByCondition"
+            parameterType="map"
+            resultMap="HospitalStatsMap">
+        SELECT
+        hospital_level,
+        institution_count,
+        visits_per_doctor,
+        bed_days_per_doctor
+        FROM hospital_statistics
+        <include refid="dynamicWhere"/>
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- ========= 统计总数 ========= -->
+    <select id="countByCondition"
+            parameterType="map"
+            resultType="int">
+        SELECT COUNT(1)
+        FROM hospital_statistics
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <!-- ========= 数值列直方图 + 汇总 ========= -->
+    <select id="histogramAllNumerics"
+            parameterType="map"
+            resultType="map">
+
+        <foreach collection="columns"
+                 item="col"
+                 separator=" UNION ALL ">
+
+            <!-- ① 直方图 -->
+            SELECT
+            #{col}                             AS field,
+            CONCAT(rng, '-', rng + #{step}-1)  AS bucket,
+            COUNT(*)                           AS cnt,
+            NULL                               AS avgVal,
+            NULL                               AS minVal,
+            NULL                               AS maxVal,
+            NULL                               AS sumVal
+            FROM (
+            SELECT FLOOR(${col} / #{step}) * #{step} AS rng
+            FROM hospital_statistics
+            <include refid="dynamicWhere"/>
+            ) t
+            GROUP BY rng
+
+            UNION ALL
+
+            <!-- ② 汇总 -->
+            SELECT
+            #{col}            AS field,
+            '__stats__'       AS bucket,
+            NULL              AS cnt,
+            AVG(${col})       AS avgVal,
+            MIN(${col})       AS minVal,
+            MAX(${col})       AS maxVal,
+            SUM(${col})       AS sumVal
+            FROM hospital_statistics
+            <include refid="dynamicWhere"/>
+
+        </foreach>
+
+        ORDER BY field,
+        CASE bucket WHEN '__stats__' THEN 1e18 ELSE 0 END,
+        bucket
+    </select>
+
+</mapper>

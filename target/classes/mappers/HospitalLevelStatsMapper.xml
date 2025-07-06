@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.csu.healthsystem.util.HospitalLevelStatsDao">
+
+    <!-- 结果映射 -->
+    <resultMap id="HospitalLevelStatsMap" type="org.csu.healthsystem.pojo.DO.HospitalLevelStats">
+        <result column="id"                  property="id"/>
+        <result column="year"                property="year"/>
+        <result column="level_3_total"       property="level3Total"/>
+        <result column="level_3a"            property="level3a"/>
+        <result column="level_3b"            property="level3b"/>
+        <result column="level_3_ungraded"    property="level3Ungraded"/>
+        <result column="level_2_total"       property="level2Total"/>
+        <result column="level_2a"            property="level2a"/>
+        <result column="level_2b"            property="level2b"/>
+        <result column="level_2_ungraded"    property="level2Ungraded"/>
+        <result column="level_1_ungraded"    property="level1Ungraded"/>
+    </resultMap>
+
+    <!-- 动态 WHERE 子句 -->
+    <sql id="dynamicWhere">
+    <where>
+    <!-- id -->
+    <if test="p.id != null"> AND id = #{p.id} </if>
+    <if test="p.idNotEq != null"> AND id != #{p.idNotEq} </if>
+    <if test="p.idIn != null">
+        AND id IN
+        <foreach collection="p.idIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="p.idNotIn != null">
+        AND id NOT IN
+        <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="p.idLike != null"> AND id LIKE #{p.idLike} </if>
+    <if test="p.idNotLike != null"> AND id NOT LIKE #{p.idNotLike} </if>
+
+    <!-- year -->
+    <if test="p.year != null"> AND year = #{p.year} </if>
+    <if test="p.yearNotEq != null"> AND year != #{p.yearNotEq} </if>
+    <if test="p.yearGt != null"> AND year &gt; #{p.yearGt} </if>
+    <if test="p.yearGte != null"> AND year &gt;= #{p.yearGte} </if>
+    <if test="p.yearLt != null"> AND year &lt; #{p.yearLt} </if>
+    <if test="p.yearLte != null"> AND year &lt;= #{p.yearLte} </if>
+    <if test="p.yearIn != null">
+        AND year IN
+        <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="p.yearNotIn != null">
+        AND year NOT IN
+        <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="p.yearLike != null"> AND year LIKE #{p.yearLike} </if>
+    <if test="p.yearNotLike != null"> AND year NOT LIKE #{p.yearNotLike} </if>
+
+    <!-- level3Total -->
+    <if test="p.level3Total != null"> AND level_3_total = #{p.level3Total} </if>
+    <if test="p.level3TotalNotEq != null"> AND level_3_total != #{p.level3TotalNotEq} </if>
+    <if test="p.level3TotalGt != null"> AND level_3_total &gt; #{p.level3TotalGt} </if>
+    <if test="p.level3TotalGte != null"> AND level_3_total &gt;= #{p.level3TotalGte} </if>
+    <if test="p.level3TotalLt != null"> AND level_3_total &lt; #{p.level3TotalLt} </if>
+    <if test="p.level3TotalLte != null"> AND level_3_total &lt;= #{p.level3TotalLte} </if>
+    <if test="p.level3TotalIn != null">
+        AND level_3_total IN
+        <foreach collection="p.level3TotalIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="p.level3TotalNotIn != null">
+        AND level_3_total NOT IN
+        <foreach collection="p.level3TotalNotIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+
+    <!-- level3a -->
+    <if test="p.level3a != null"> AND level_3a = #{p.level3a} </if>
+    <if test="p.level3aNotEq != null"> AND level_3a != #{p.level3aNotEq} </if>
+    <if test="p.level3aGt != null"> AND level_3a &gt; #{p.level3aGt} </if>
+    <if test="p.level3aGte != null"> AND level_3a &gt;= #{p.level3aGte} </if>
+    <if test="p.level3aLt != null"> AND level_3a &lt; #{p.level3aLt} </if>
+    <if test="p.level3aLte != null"> AND level_3a &lt;= #{p.level3aLte} </if>
+    <if test="p.level3aIn != null">
+        AND level_3a IN
+        <foreach collection="p.level3aIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="p.level3aNotIn != null">
+        AND level_3a NOT IN
+        <foreach collection="p.level3aNotIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+
+    <!-- level3b -->
+    <if test="p.level3b != null"> AND level_3b = #{p.level3b} </if>
+    <if test="p.level3bNotEq != null"> AND level_3b != #{p.level3bNotEq} </if>
+    <if test="p.level3bGt != null"> AND level_3b &gt; #{p.level3bGt} </if>
+    <if test="p.level3bGte != null"> AND level_3b &gt;= #{p.level3bGte} </if>
+    <if test="p.level3bLt != null"> AND level_3b &lt; #{p.level3bLt} </if>
+    <if test="p.level3bLte != null"> AND level_3b &lt;= #{p.level3bLte} </if>
+    <if test="p.level3bIn != null">
+        AND level_3b IN
+        <foreach collection="p.level3bIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="p.level3bNotIn != null">
+        AND level_3b NOT IN
+        <foreach collection="p.level3bNotIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+
+    <!-- level3Ungraded -->
+    <if test="p.level3Ungraded != null"> AND level_3_ungraded = #{p.level3Ungraded} </if>
+    <if test="p.level3UngradedNotEq != null"> AND level_3_ungraded != #{p.level3UngradedNotEq} </if>
+    <if test="p.level3UngradedGt != null"> AND level_3_ungraded &gt; #{p.level3UngradedGt} </if>
+    <if test="p.level3UngradedGte != null"> AND level_3_ungraded &gt;= #{p.level3UngradedGte} </if>
+    <if test="p.level3UngradedLt != null"> AND level_3_ungraded &lt; #{p.level3UngradedLt} </if>
+    <if test="p.level3UngradedLte != null"> AND level_3_ungraded &lt;= #{p.level3UngradedLte} </if>
+    <if test="p.level3UngradedIn != null">
+        AND level_3_ungraded IN
+        <foreach collection="p.level3UngradedIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="p.level3UngradedNotIn != null">
+        AND level_3_ungraded NOT IN
+        <foreach collection="p.level3UngradedNotIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+
+    <!-- level2Total -->
+    <if test="p.level2Total != null"> AND level_2_total = #{p.level2Total} </if>
+    <if test="p.level2TotalNotEq != null"> AND level_2_total != #{p.level2TotalNotEq} </if>
+    <if test="p.level2TotalGt != null"> AND level_2_total &gt; #{p.level2TotalGt} </if>
+    <if test="p.level2TotalGte != null"> AND level_2_total &gt;= #{p.level2TotalGte} </if>
+    <if test="p.level2TotalLt != null"> AND level_2_total &lt; #{p.level2TotalLt} </if>
+    <if test="p.level2TotalLte != null"> AND level_2_total &lt;= #{p.level2TotalLte} </if>
+    <if test="p.level2TotalIn != null">
+        AND level_2_total IN
+        <foreach collection="p.level2TotalIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="p.level2TotalNotIn != null">
+        AND level_2_total NOT IN
+        <foreach collection="p.level2TotalNotIn" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+        <!-- level2a -->
+        <if test="p.level2a != null"> AND level_2a = #{p.level2a} </if>
+        <if test="p.level2aNotEq != null"> AND level_2a != #{p.level2aNotEq} </if>
+        <if test="p.level2aGt != null"> AND level_2a &gt; #{p.level2aGt} </if>
+        <if test="p.level2aGte != null"> AND level_2a &gt;= #{p.level2aGte} </if>
+        <if test="p.level2aLt != null"> AND level_2a &lt; #{p.level2aLt} </if>
+        <if test="p.level2aLte != null"> AND level_2a &lt;= #{p.level2aLte} </if>
+        <if test="p.level2aIn != null">
+            AND level_2a IN
+            <foreach collection="p.level2aIn" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="p.level2aNotIn != null">
+            AND level_2a NOT IN
+            <foreach collection="p.level2aNotIn" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <!-- level2b -->
+        <if test="p.level2b != null"> AND level_2b = #{p.level2b} </if>
+        <if test="p.level2bNotEq != null"> AND level_2b != #{p.level2bNotEq} </if>
+        <if test="p.level2bGt != null"> AND level_2b &gt; #{p.level2bGt} </if>
+        <if test="p.level2bGte != null"> AND level_2b &gt;= #{p.level2bGte} </if>
+        <if test="p.level2bLt != null"> AND level_2b &lt; #{p.level2bLt} </if>
+        <if test="p.level2bLte != null"> AND level_2b &lt;= #{p.level2bLte} </if>
+        <if test="p.level2bIn != null">
+            AND level_2b IN
+            <foreach collection="p.level2bIn" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="p.level2bNotIn != null">
+            AND level_2b NOT IN
+            <foreach collection="p.level2bNotIn" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <!-- level2Ungraded -->
+        <if test="p.level2Ungraded != null"> AND level_2_ungraded = #{p.level2Ungraded} </if>
+        <if test="p.level2UngradedNotEq != null"> AND level_2_ungraded != #{p.level2UngradedNotEq} </if>
+        <if test="p.level2UngradedGt != null"> AND level_2_ungraded &gt; #{p.level2UngradedGt} </if>
+        <if test="p.level2UngradedGte != null"> AND level_2_ungraded &gt;= #{p.level2UngradedGte} </if>
+        <if test="p.level2UngradedLt != null"> AND level_2_ungraded &lt; #{p.level2UngradedLt} </if>
+        <if test="p.level2UngradedLte != null"> AND level_2_ungraded &lt;= #{p.level2UngradedLte} </if>
+        <if test="p.level2UngradedIn != null">
+            AND level_2_ungraded IN
+            <foreach collection="p.level2UngradedIn" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="p.level2UngradedNotIn != null">
+            AND level_2_ungraded NOT IN
+            <foreach collection="p.level2UngradedNotIn" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <!-- level1Ungraded -->
+        <if test="p.level1Ungraded != null"> AND level_1_ungraded = #{p.level1Ungraded} </if>
+        <if test="p.level1UngradedNotEq != null"> AND level_1_ungraded != #{p.level1UngradedNotEq} </if>
+        <if test="p.level1UngradedGt != null"> AND level_1_ungraded &gt; #{p.level1UngradedGt} </if>
+        <if test="p.level1UngradedGte != null"> AND level_1_ungraded &gt;= #{p.level1UngradedGte} </if>
+        <if test="p.level1UngradedLt != null"> AND level_1_ungraded &lt; #{p.level1UngradedLt} </if>
+        <if test="p.level1UngradedLte != null"> AND level_1_ungraded &lt;= #{p.level1UngradedLte} </if>
+        <if test="p.level1UngradedIn != null">
+            AND level_1_ungraded IN
+            <foreach collection="p.level1UngradedIn" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="p.level1UngradedNotIn != null">
+            AND level_1_ungraded NOT IN
+            <foreach collection="p.level1UngradedNotIn" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </where>
+    </sql>
+
+    <!-- ========== 动态查询 ========== -->
+    <select id="selectByCondition"
+            resultMap="HospitalLevelStatsMap"
+            parameterType="map">
+        SELECT
+        id,
+        year,
+        level_3_total,
+        level_3a,
+        level_3b,
+        level_3_ungraded,
+        level_2_total,
+        level_2a,
+        level_2b,
+        level_2_ungraded,
+        level_1_ungraded
+        FROM hospital_level_stats
+        <include refid="dynamicWhere"/>
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- ========== 统计总数 ========== -->
+    <select id="countByCondition"
+            parameterType="map"
+            resultType="int">
+        SELECT COUNT(1)
+        FROM hospital_level_stats
+        <include refid="dynamicWhere"/>
+    </select>
+
+    <!-- ========== 柱状图 + 汇总统计 ========== -->
+    <select id="histogramAllNumerics"
+            parameterType="map"
+            resultType="map">
+
+        <foreach collection="columns" item="col" separator=" UNION ALL ">
+
+            <!-- ▍① 直方图 -->
+            SELECT
+            #{col}                                     AS field,
+            CONCAT(rng, '-', rng + #{step} - 1)        AS bucket,
+            COUNT(*)                                   AS cnt,
+            NULL                                       AS avgVal,
+            NULL                                       AS minVal,
+            NULL                                       AS maxVal,
+            NULL                                       AS sumVal
+            FROM (
+            SELECT FLOOR(${col} / #{step}) * #{step} AS rng
+            FROM hospital_level_stats
+            <include refid="dynamicWhere"/>
+            ) t
+            GROUP BY rng
+
+            UNION ALL
+
+            <!-- ▍② 整体统计 -->
+            SELECT
+            #{col}                        AS field,
+            '__stats__'                  AS bucket,
+            NULL                         AS cnt,
+            AVG(${col})                  AS avgVal,
+            MIN(${col})                  AS minVal,
+            MAX(${col})                  AS maxVal,
+            SUM(${col})                  AS sumVal
+            FROM hospital_level_stats
+            <include refid="dynamicWhere"/>
+
+        </foreach>
+
+        ORDER BY field,
+        CASE bucket
+        WHEN '__stats__' THEN 1e18
+        ELSE 0
+        END,
+        bucket
+    </select>
+
+</mapper>
