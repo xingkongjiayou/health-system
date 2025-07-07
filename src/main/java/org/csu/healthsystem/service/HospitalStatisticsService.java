@@ -21,6 +21,7 @@ public class HospitalStatisticsService extends BaseQueryService2<HospitalStatist
     @Override
     public Set<String> getAllowedColumns() {
         return Set.of(
+                "year",
                 "hospitalLevel",
                 "institutionCount",
                 "visitsPerDoctor",
