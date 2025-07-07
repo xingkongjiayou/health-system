@@ -55,6 +55,18 @@
             <if test="p.avgLengthOfStayGte != null">AND avg_length_of_stay &gt;= #{p.avgLengthOfStayGte}</if>
             <if test="p.avgLengthOfStayLt != null">AND avg_length_of_stay &lt; #{p.avgLengthOfStayLt}</if>
             <if test="p.avgLengthOfStayLte != null">AND avg_length_of_stay &lt;= #{p.avgLengthOfStayLte}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
         </where>
         <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
@@ -112,17 +124,28 @@
             <if test="p.avgLengthOfStayGte != null">AND avg_length_of_stay &gt;= #{p.avgLengthOfStayGte}</if>
             <if test="p.avgLengthOfStayLt != null">AND avg_length_of_stay &lt; #{p.avgLengthOfStayLt}</if>
             <if test="p.avgLengthOfStayLte != null">AND avg_length_of_stay &lt;= #{p.avgLengthOfStayLte}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
         </where>
     </select>
 
     <!-- 聚合：床位利用率描述性统计（全字段条件） -->
-    <select id="bedUtilizationRateStats" resultType="map">
+    <select id="bed_utilization_rate" resultType="map">
         SELECT
-            MIN(bed_utilization_rate) AS min,
-            MAX(bed_utilization_rate) AS max,
-            AVG(bed_utilization_rate) AS avg,
-            SUM(bed_utilization_rate) AS sum,
-            COUNT(*) AS count
+        MIN(bed_utilization_rate) AS bedUtilizationRateMin,
+        MAX(bed_utilization_rate) AS bedUtilizationRateMax,
+        AVG(bed_utilization_rate) AS bedUtilizationRateAvg,
+        SUM(bed_utilization_rate) AS bedUtilizationRateSum
         FROM hospital_service_statistics
         <where>
             <if test="p.idEq != null">AND id = #{p.idEq}</if>
@@ -171,10 +194,361 @@
             <if test="p.avgLengthOfStayGte != null">AND avg_length_of_stay &gt;= #{p.avgLengthOfStayGte}</if>
             <if test="p.avgLengthOfStayLt != null">AND avg_length_of_stay &lt; #{p.avgLengthOfStayLt}</if>
             <if test="p.avgLengthOfStayLte != null">AND avg_length_of_stay &lt;= #{p.avgLengthOfStayLte}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
         </where>
     </select>
-
-    <!-- 分桶聚合：床位利用率分布（全字段条件，举例分4档） -->
+    <select id="outpatient_visits" resultType="map">
+        SELECT
+        MIN(outpatient_visits) AS outpatientVisitsMin,
+        MAX(outpatient_visits) AS outpatientVisitsMax,
+        AVG(outpatient_visits) AS outpatientVisitsAvg,
+        SUM(outpatient_visits) AS outpatientVisitsSum
+        FROM hospital_service_statistics
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.idNotEq != null">AND id != #{p.idNotEq}</if>
+            <if test="p.idGt != null">AND id &gt; #{p.idGt}</if>
+            <if test="p.idGte != null">AND id &gt;= #{p.idGte}</if>
+            <if test="p.idLt != null">AND id &lt; #{p.idLt}</if>
+            <if test="p.idLte != null">AND id &lt;= #{p.idLte}</if>
+            <if test="p.idIn != null and p.idIn.size > 0">AND id IN
+                <foreach collection="p.idIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idNotIn != null and p.idNotIn.size > 0">AND id NOT IN
+                <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.typeNameEq != null">AND type_name = #{p.typeNameEq}</if>
+            <if test="p.typeNameNotEq != null">AND type_name != #{p.typeNameNotEq}</if>
+            <if test="p.typeNameLike != null">AND type_name LIKE CONCAT('%', #{p.typeNameLike}, '%')</if>
+            <if test="p.typeNameNotLike != null">AND type_name NOT LIKE CONCAT('%', #{p.typeNameNotLike}, '%')</if>
+            <if test="p.outpatientVisitsEq != null">AND outpatient_visits = #{p.outpatientVisitsEq}</if>
+            <if test="p.outpatientVisitsGt != null">AND outpatient_visits &gt; #{p.outpatientVisitsGt}</if>
+            <if test="p.outpatientVisitsGte != null">AND outpatient_visits &gt;= #{p.outpatientVisitsGte}</if>
+            <if test="p.outpatientVisitsLt != null">AND outpatient_visits &lt; #{p.outpatientVisitsLt}</if>
+            <if test="p.outpatientVisitsLte != null">AND outpatient_visits &lt;= #{p.outpatientVisitsLte}</if>
+            <if test="p.emergencyVisitsEq != null">AND emergency_visits = #{p.emergencyVisitsEq}</if>
+            <if test="p.emergencyVisitsGt != null">AND emergency_visits &gt; #{p.emergencyVisitsGt}</if>
+            <if test="p.emergencyVisitsGte != null">AND emergency_visits &gt;= #{p.emergencyVisitsGte}</if>
+            <if test="p.emergencyVisitsLt != null">AND emergency_visits &lt; #{p.emergencyVisitsLt}</if>
+            <if test="p.emergencyVisitsLte != null">AND emergency_visits &lt;= #{p.emergencyVisitsLte}</if>
+            <if test="p.referralsEq != null">AND referrals = #{p.referralsEq}</if>
+            <if test="p.referralsGt != null">AND referrals &gt; #{p.referralsGt}</if>
+            <if test="p.referralsGte != null">AND referrals &gt;= #{p.referralsGte}</if>
+            <if test="p.referralsLt != null">AND referrals &lt; #{p.referralsLt}</if>
+            <if test="p.referralsLte != null">AND referrals &lt;= #{p.referralsLte}</if>
+            <if test="p.transferOutEq != null">AND transfer_out = #{p.transferOutEq}</if>
+            <if test="p.transferOutGt != null">AND transfer_out &gt; #{p.transferOutGt}</if>
+            <if test="p.transferOutGte != null">AND transfer_out &gt;= #{p.transferOutGte}</if>
+            <if test="p.transferOutLt != null">AND transfer_out &lt; #{p.transferOutLt}</if>
+            <if test="p.transferOutLte != null">AND transfer_out &lt;= #{p.transferOutLte}</if>
+            <if test="p.bedUtilizationRateEq != null">AND bed_utilization_rate = #{p.bedUtilizationRateEq}</if>
+            <if test="p.bedUtilizationRateGt != null">AND bed_utilization_rate &gt; #{p.bedUtilizationRateGt}</if>
+            <if test="p.bedUtilizationRateGte != null">AND bed_utilization_rate &gt;= #{p.bedUtilizationRateGte}</if>
+            <if test="p.bedUtilizationRateLt != null">AND bed_utilization_rate &lt; #{p.bedUtilizationRateLt}</if>
+            <if test="p.bedUtilizationRateLte != null">AND bed_utilization_rate &lt;= #{p.bedUtilizationRateLte}</if>
+            <if test="p.avgLengthOfStayEq != null">AND avg_length_of_stay = #{p.avgLengthOfStayEq}</if>
+            <if test="p.avgLengthOfStayGt != null">AND avg_length_of_stay &gt; #{p.avgLengthOfStayGt}</if>
+            <if test="p.avgLengthOfStayGte != null">AND avg_length_of_stay &gt;= #{p.avgLengthOfStayGte}</if>
+            <if test="p.avgLengthOfStayLt != null">AND avg_length_of_stay &lt; #{p.avgLengthOfStayLt}</if>
+            <if test="p.avgLengthOfStayLte != null">AND avg_length_of_stay &lt;= #{p.avgLengthOfStayLte}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </select>
+    <select id="emergency_visits" resultType="map">
+        SELECT
+        MIN(emergency_visits) AS emergencyVisitsMin,
+        MAX(emergency_visits) AS emergencyVisitsMax,
+        AVG(emergency_visits) AS emergencyVisitsAvg,
+        SUM(emergency_visits) AS emergencyVisitsSum
+        FROM hospital_service_statistics
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.idNotEq != null">AND id != #{p.idNotEq}</if>
+            <if test="p.idGt != null">AND id &gt; #{p.idGt}</if>
+            <if test="p.idGte != null">AND id &gt;= #{p.idGte}</if>
+            <if test="p.idLt != null">AND id &lt; #{p.idLt}</if>
+            <if test="p.idLte != null">AND id &lt;= #{p.idLte}</if>
+            <if test="p.idIn != null and p.idIn.size > 0">AND id IN
+                <foreach collection="p.idIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idNotIn != null and p.idNotIn.size > 0">AND id NOT IN
+                <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.typeNameEq != null">AND type_name = #{p.typeNameEq}</if>
+            <if test="p.typeNameNotEq != null">AND type_name != #{p.typeNameNotEq}</if>
+            <if test="p.typeNameLike != null">AND type_name LIKE CONCAT('%', #{p.typeNameLike}, '%')</if>
+            <if test="p.typeNameNotLike != null">AND type_name NOT LIKE CONCAT('%', #{p.typeNameNotLike}, '%')</if>
+            <if test="p.outpatientVisitsEq != null">AND outpatient_visits = #{p.outpatientVisitsEq}</if>
+            <if test="p.outpatientVisitsGt != null">AND outpatient_visits &gt; #{p.outpatientVisitsGt}</if>
+            <if test="p.outpatientVisitsGte != null">AND outpatient_visits &gt;= #{p.outpatientVisitsGte}</if>
+            <if test="p.outpatientVisitsLt != null">AND outpatient_visits &lt; #{p.outpatientVisitsLt}</if>
+            <if test="p.outpatientVisitsLte != null">AND outpatient_visits &lt;= #{p.outpatientVisitsLte}</if>
+            <if test="p.emergencyVisitsEq != null">AND emergency_visits = #{p.emergencyVisitsEq}</if>
+            <if test="p.emergencyVisitsGt != null">AND emergency_visits &gt; #{p.emergencyVisitsGt}</if>
+            <if test="p.emergencyVisitsGte != null">AND emergency_visits &gt;= #{p.emergencyVisitsGte}</if>
+            <if test="p.emergencyVisitsLt != null">AND emergency_visits &lt; #{p.emergencyVisitsLt}</if>
+            <if test="p.emergencyVisitsLte != null">AND emergency_visits &lt;= #{p.emergencyVisitsLte}</if>
+            <if test="p.referralsEq != null">AND referrals = #{p.referralsEq}</if>
+            <if test="p.referralsGt != null">AND referrals &gt; #{p.referralsGt}</if>
+            <if test="p.referralsGte != null">AND referrals &gt;= #{p.referralsGte}</if>
+            <if test="p.referralsLt != null">AND referrals &lt; #{p.referralsLt}</if>
+            <if test="p.referralsLte != null">AND referrals &lt;= #{p.referralsLte}</if>
+            <if test="p.transferOutEq != null">AND transfer_out = #{p.transferOutEq}</if>
+            <if test="p.transferOutGt != null">AND transfer_out &gt; #{p.transferOutGt}</if>
+            <if test="p.transferOutGte != null">AND transfer_out &gt;= #{p.transferOutGte}</if>
+            <if test="p.transferOutLt != null">AND transfer_out &lt; #{p.transferOutLt}</if>
+            <if test="p.transferOutLte != null">AND transfer_out &lt;= #{p.transferOutLte}</if>
+            <if test="p.bedUtilizationRateEq != null">AND bed_utilization_rate = #{p.bedUtilizationRateEq}</if>
+            <if test="p.bedUtilizationRateGt != null">AND bed_utilization_rate &gt; #{p.bedUtilizationRateGt}</if>
+            <if test="p.bedUtilizationRateGte != null">AND bed_utilization_rate &gt;= #{p.bedUtilizationRateGte}</if>
+            <if test="p.bedUtilizationRateLt != null">AND bed_utilization_rate &lt; #{p.bedUtilizationRateLt}</if>
+            <if test="p.bedUtilizationRateLte != null">AND bed_utilization_rate &lt;= #{p.bedUtilizationRateLte}</if>
+            <if test="p.avgLengthOfStayEq != null">AND avg_length_of_stay = #{p.avgLengthOfStayEq}</if>
+            <if test="p.avgLengthOfStayGt != null">AND avg_length_of_stay &gt; #{p.avgLengthOfStayGt}</if>
+            <if test="p.avgLengthOfStayGte != null">AND avg_length_of_stay &gt;= #{p.avgLengthOfStayGte}</if>
+            <if test="p.avgLengthOfStayLt != null">AND avg_length_of_stay &lt; #{p.avgLengthOfStayLt}</if>
+            <if test="p.avgLengthOfStayLte != null">AND avg_length_of_stay &lt;= #{p.avgLengthOfStayLte}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </select>
+    <select id="referrals" resultType="map">
+        SELECT
+        MIN(referrals) AS referralsMin,
+        MAX(referrals) AS referralsMax,
+        AVG(referrals) AS referralsAvg,
+        SUM(referrals) AS referralsSum
+        FROM hospital_service_statistics
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.idNotEq != null">AND id != #{p.idNotEq}</if>
+            <if test="p.idGt != null">AND id &gt; #{p.idGt}</if>
+            <if test="p.idGte != null">AND id &gt;= #{p.idGte}</if>
+            <if test="p.idLt != null">AND id &lt; #{p.idLt}</if>
+            <if test="p.idLte != null">AND id &lt;= #{p.idLte}</if>
+            <if test="p.idIn != null and p.idIn.size > 0">AND id IN
+                <foreach collection="p.idIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idNotIn != null and p.idNotIn.size > 0">AND id NOT IN
+                <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.typeNameEq != null">AND type_name = #{p.typeNameEq}</if>
+            <if test="p.typeNameNotEq != null">AND type_name != #{p.typeNameNotEq}</if>
+            <if test="p.typeNameLike != null">AND type_name LIKE CONCAT('%', #{p.typeNameLike}, '%')</if>
+            <if test="p.typeNameNotLike != null">AND type_name NOT LIKE CONCAT('%', #{p.typeNameNotLike}, '%')</if>
+            <if test="p.outpatientVisitsEq != null">AND outpatient_visits = #{p.outpatientVisitsEq}</if>
+            <if test="p.outpatientVisitsGt != null">AND outpatient_visits &gt; #{p.outpatientVisitsGt}</if>
+            <if test="p.outpatientVisitsGte != null">AND outpatient_visits &gt;= #{p.outpatientVisitsGte}</if>
+            <if test="p.outpatientVisitsLt != null">AND outpatient_visits &lt; #{p.outpatientVisitsLt}</if>
+            <if test="p.outpatientVisitsLte != null">AND outpatient_visits &lt;= #{p.outpatientVisitsLte}</if>
+            <if test="p.emergencyVisitsEq != null">AND emergency_visits = #{p.emergencyVisitsEq}</if>
+            <if test="p.emergencyVisitsGt != null">AND emergency_visits &gt; #{p.emergencyVisitsGt}</if>
+            <if test="p.emergencyVisitsGte != null">AND emergency_visits &gt;= #{p.emergencyVisitsGte}</if>
+            <if test="p.emergencyVisitsLt != null">AND emergency_visits &lt; #{p.emergencyVisitsLt}</if>
+            <if test="p.emergencyVisitsLte != null">AND emergency_visits &lt;= #{p.emergencyVisitsLte}</if>
+            <if test="p.referralsEq != null">AND referrals = #{p.referralsEq}</if>
+            <if test="p.referralsGt != null">AND referrals &gt; #{p.referralsGt}</if>
+            <if test="p.referralsGte != null">AND referrals &gt;= #{p.referralsGte}</if>
+            <if test="p.referralsLt != null">AND referrals &lt; #{p.referralsLt}</if>
+            <if test="p.referralsLte != null">AND referrals &lt;= #{p.referralsLte}</if>
+            <if test="p.transferOutEq != null">AND transfer_out = #{p.transferOutEq}</if>
+            <if test="p.transferOutGt != null">AND transfer_out &gt; #{p.transferOutGt}</if>
+            <if test="p.transferOutGte != null">AND transfer_out &gt;= #{p.transferOutGte}</if>
+            <if test="p.transferOutLt != null">AND transfer_out &lt; #{p.transferOutLt}</if>
+            <if test="p.transferOutLte != null">AND transfer_out &lt;= #{p.transferOutLte}</if>
+            <if test="p.bedUtilizationRateEq != null">AND bed_utilization_rate = #{p.bedUtilizationRateEq}</if>
+            <if test="p.bedUtilizationRateGt != null">AND bed_utilization_rate &gt; #{p.bedUtilizationRateGt}</if>
+            <if test="p.bedUtilizationRateGte != null">AND bed_utilization_rate &gt;= #{p.bedUtilizationRateGte}</if>
+            <if test="p.bedUtilizationRateLt != null">AND bed_utilization_rate &lt; #{p.bedUtilizationRateLt}</if>
+            <if test="p.bedUtilizationRateLte != null">AND bed_utilization_rate &lt;= #{p.bedUtilizationRateLte}</if>
+            <if test="p.avgLengthOfStayEq != null">AND avg_length_of_stay = #{p.avgLengthOfStayEq}</if>
+            <if test="p.avgLengthOfStayGt != null">AND avg_length_of_stay &gt; #{p.avgLengthOfStayGt}</if>
+            <if test="p.avgLengthOfStayGte != null">AND avg_length_of_stay &gt;= #{p.avgLengthOfStayGte}</if>
+            <if test="p.avgLengthOfStayLt != null">AND avg_length_of_stay &lt; #{p.avgLengthOfStayLt}</if>
+            <if test="p.avgLengthOfStayLte != null">AND avg_length_of_stay &lt;= #{p.avgLengthOfStayLte}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </select>
+    <select id="transfer_out" resultType="map">
+        SELECT
+        MIN(transfer_out) AS transferOutMin,
+        MAX(transfer_out) AS transferOutMax,
+        AVG(transfer_out) AS transferOutAvg,
+        SUM(transfer_out) AS transferOutSum
+        FROM hospital_service_statistics
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.idNotEq != null">AND id != #{p.idNotEq}</if>
+            <if test="p.idGt != null">AND id &gt; #{p.idGt}</if>
+            <if test="p.idGte != null">AND id &gt;= #{p.idGte}</if>
+            <if test="p.idLt != null">AND id &lt; #{p.idLt}</if>
+            <if test="p.idLte != null">AND id &lt;= #{p.idLte}</if>
+            <if test="p.idIn != null and p.idIn.size > 0">AND id IN
+                <foreach collection="p.idIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idNotIn != null and p.idNotIn.size > 0">AND id NOT IN
+                <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.typeNameEq != null">AND type_name = #{p.typeNameEq}</if>
+            <if test="p.typeNameNotEq != null">AND type_name != #{p.typeNameNotEq}</if>
+            <if test="p.typeNameLike != null">AND type_name LIKE CONCAT('%', #{p.typeNameLike}, '%')</if>
+            <if test="p.typeNameNotLike != null">AND type_name NOT LIKE CONCAT('%', #{p.typeNameNotLike}, '%')</if>
+            <if test="p.outpatientVisitsEq != null">AND outpatient_visits = #{p.outpatientVisitsEq}</if>
+            <if test="p.outpatientVisitsGt != null">AND outpatient_visits &gt; #{p.outpatientVisitsGt}</if>
+            <if test="p.outpatientVisitsGte != null">AND outpatient_visits &gt;= #{p.outpatientVisitsGte}</if>
+            <if test="p.outpatientVisitsLt != null">AND outpatient_visits &lt; #{p.outpatientVisitsLt}</if>
+            <if test="p.outpatientVisitsLte != null">AND outpatient_visits &lt;= #{p.outpatientVisitsLte}</if>
+            <if test="p.emergencyVisitsEq != null">AND emergency_visits = #{p.emergencyVisitsEq}</if>
+            <if test="p.emergencyVisitsGt != null">AND emergency_visits &gt; #{p.emergencyVisitsGt}</if>
+            <if test="p.emergencyVisitsGte != null">AND emergency_visits &gt;= #{p.emergencyVisitsGte}</if>
+            <if test="p.emergencyVisitsLt != null">AND emergency_visits &lt; #{p.emergencyVisitsLt}</if>
+            <if test="p.emergencyVisitsLte != null">AND emergency_visits &lt;= #{p.emergencyVisitsLte}</if>
+            <if test="p.referralsEq != null">AND referrals = #{p.referralsEq}</if>
+            <if test="p.referralsGt != null">AND referrals &gt; #{p.referralsGt}</if>
+            <if test="p.referralsGte != null">AND referrals &gt;= #{p.referralsGte}</if>
+            <if test="p.referralsLt != null">AND referrals &lt; #{p.referralsLt}</if>
+            <if test="p.referralsLte != null">AND referrals &lt;= #{p.referralsLte}</if>
+            <if test="p.transferOutEq != null">AND transfer_out = #{p.transferOutEq}</if>
+            <if test="p.transferOutGt != null">AND transfer_out &gt; #{p.transferOutGt}</if>
+            <if test="p.transferOutGte != null">AND transfer_out &gt;= #{p.transferOutGte}</if>
+            <if test="p.transferOutLt != null">AND transfer_out &lt; #{p.transferOutLt}</if>
+            <if test="p.transferOutLte != null">AND transfer_out &lt;= #{p.transferOutLte}</if>
+            <if test="p.bedUtilizationRateEq != null">AND bed_utilization_rate = #{p.bedUtilizationRateEq}</if>
+            <if test="p.bedUtilizationRateGt != null">AND bed_utilization_rate &gt; #{p.bedUtilizationRateGt}</if>
+            <if test="p.bedUtilizationRateGte != null">AND bed_utilization_rate &gt;= #{p.bedUtilizationRateGte}</if>
+            <if test="p.bedUtilizationRateLt != null">AND bed_utilization_rate &lt; #{p.bedUtilizationRateLt}</if>
+            <if test="p.bedUtilizationRateLte != null">AND bed_utilization_rate &lt;= #{p.bedUtilizationRateLte}</if>
+            <if test="p.avgLengthOfStayEq != null">AND avg_length_of_stay = #{p.avgLengthOfStayEq}</if>
+            <if test="p.avgLengthOfStayGt != null">AND avg_length_of_stay &gt; #{p.avgLengthOfStayGt}</if>
+            <if test="p.avgLengthOfStayGte != null">AND avg_length_of_stay &gt;= #{p.avgLengthOfStayGte}</if>
+            <if test="p.avgLengthOfStayLt != null">AND avg_length_of_stay &lt; #{p.avgLengthOfStayLt}</if>
+            <if test="p.avgLengthOfStayLte != null">AND avg_length_of_stay &lt;= #{p.avgLengthOfStayLte}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </select>
+    <select id="avg_length_of_stay" resultType="map">
+        SELECT
+        MIN(avg_length_of_stay) AS avgLengthOfStayMin,
+        MAX(avg_length_of_stay) AS avgLengthOfStayMax,
+        AVG(avg_length_of_stay) AS avgLengthOfStayAvg,
+        SUM(avg_length_of_stay) AS avgLengthOfStaySum
+        FROM hospital_service_statistics
+        <where>
+            <if test="p.idEq != null">AND id = #{p.idEq}</if>
+            <if test="p.idNotEq != null">AND id != #{p.idNotEq}</if>
+            <if test="p.idGt != null">AND id &gt; #{p.idGt}</if>
+            <if test="p.idGte != null">AND id &gt;= #{p.idGte}</if>
+            <if test="p.idLt != null">AND id &lt; #{p.idLt}</if>
+            <if test="p.idLte != null">AND id &lt;= #{p.idLte}</if>
+            <if test="p.idIn != null and p.idIn.size > 0">AND id IN
+                <foreach collection="p.idIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.idNotIn != null and p.idNotIn.size > 0">AND id NOT IN
+                <foreach collection="p.idNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.typeNameEq != null">AND type_name = #{p.typeNameEq}</if>
+            <if test="p.typeNameNotEq != null">AND type_name != #{p.typeNameNotEq}</if>
+            <if test="p.typeNameLike != null">AND type_name LIKE CONCAT('%', #{p.typeNameLike}, '%')</if>
+            <if test="p.typeNameNotLike != null">AND type_name NOT LIKE CONCAT('%', #{p.typeNameNotLike}, '%')</if>
+            <if test="p.outpatientVisitsEq != null">AND outpatient_visits = #{p.outpatientVisitsEq}</if>
+            <if test="p.outpatientVisitsGt != null">AND outpatient_visits &gt; #{p.outpatientVisitsGt}</if>
+            <if test="p.outpatientVisitsGte != null">AND outpatient_visits &gt;= #{p.outpatientVisitsGte}</if>
+            <if test="p.outpatientVisitsLt != null">AND outpatient_visits &lt; #{p.outpatientVisitsLt}</if>
+            <if test="p.outpatientVisitsLte != null">AND outpatient_visits &lt;= #{p.outpatientVisitsLte}</if>
+            <if test="p.emergencyVisitsEq != null">AND emergency_visits = #{p.emergencyVisitsEq}</if>
+            <if test="p.emergencyVisitsGt != null">AND emergency_visits &gt; #{p.emergencyVisitsGt}</if>
+            <if test="p.emergencyVisitsGte != null">AND emergency_visits &gt;= #{p.emergencyVisitsGte}</if>
+            <if test="p.emergencyVisitsLt != null">AND emergency_visits &lt; #{p.emergencyVisitsLt}</if>
+            <if test="p.emergencyVisitsLte != null">AND emergency_visits &lt;= #{p.emergencyVisitsLte}</if>
+            <if test="p.referralsEq != null">AND referrals = #{p.referralsEq}</if>
+            <if test="p.referralsGt != null">AND referrals &gt; #{p.referralsGt}</if>
+            <if test="p.referralsGte != null">AND referrals &gt;= #{p.referralsGte}</if>
+            <if test="p.referralsLt != null">AND referrals &lt; #{p.referralsLt}</if>
+            <if test="p.referralsLte != null">AND referrals &lt;= #{p.referralsLte}</if>
+            <if test="p.transferOutEq != null">AND transfer_out = #{p.transferOutEq}</if>
+            <if test="p.transferOutGt != null">AND transfer_out &gt; #{p.transferOutGt}</if>
+            <if test="p.transferOutGte != null">AND transfer_out &gt;= #{p.transferOutGte}</if>
+            <if test="p.transferOutLt != null">AND transfer_out &lt; #{p.transferOutLt}</if>
+            <if test="p.transferOutLte != null">AND transfer_out &lt;= #{p.transferOutLte}</if>
+            <if test="p.bedUtilizationRateEq != null">AND bed_utilization_rate = #{p.bedUtilizationRateEq}</if>
+            <if test="p.bedUtilizationRateGt != null">AND bed_utilization_rate &gt; #{p.bedUtilizationRateGt}</if>
+            <if test="p.bedUtilizationRateGte != null">AND bed_utilization_rate &gt;= #{p.bedUtilizationRateGte}</if>
+            <if test="p.bedUtilizationRateLt != null">AND bed_utilization_rate &lt; #{p.bedUtilizationRateLt}</if>
+            <if test="p.bedUtilizationRateLte != null">AND bed_utilization_rate &lt;= #{p.bedUtilizationRateLte}</if>
+            <if test="p.avgLengthOfStayEq != null">AND avg_length_of_stay = #{p.avgLengthOfStayEq}</if>
+            <if test="p.avgLengthOfStayGt != null">AND avg_length_of_stay &gt; #{p.avgLengthOfStayGt}</if>
+            <if test="p.avgLengthOfStayGte != null">AND avg_length_of_stay &gt;= #{p.avgLengthOfStayGte}</if>
+            <if test="p.avgLengthOfStayLt != null">AND avg_length_of_stay &lt; #{p.avgLengthOfStayLt}</if>
+            <if test="p.avgLengthOfStayLte != null">AND avg_length_of_stay &lt;= #{p.avgLengthOfStayLte}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </where>
+    </select>
+    <!-- 分桶聚合：床位利用率分布-->
     <select id="bedUtilizationRateBuckets" resultType="map">
         SELECT
             CASE
@@ -232,12 +606,24 @@
             <if test="p.avgLengthOfStayGte != null">AND avg_length_of_stay &gt;= #{p.avgLengthOfStayGte}</if>
             <if test="p.avgLengthOfStayLt != null">AND avg_length_of_stay &lt; #{p.avgLengthOfStayLt}</if>
             <if test="p.avgLengthOfStayLte != null">AND avg_length_of_stay &lt;= #{p.avgLengthOfStayLte}</if>
+            <if test="p.yearEq != null">AND year = #{p.yearEq}</if>
+            <if test="p.yearIn != null and p.yearIn.size > 0">AND year IN
+                <foreach collection="p.yearIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="p.yearNotEq != null">AND year != #{p.yearNotEq}</if>
+            <if test="p.yearGt != null">AND year &gt; #{p.yearGt}</if>
+            <if test="p.yearGte != null">AND year &gt;= #{p.yearGte}</if>
+            <if test="p.yearLt != null">AND year &lt; #{p.yearLt}</if>
+            <if test="p.yearLte != null">AND year &lt;= #{p.yearLte}</if>
+            <if test="p.yearNotIn != null and p.yearNotIn.size > 0">AND year NOT IN
+                <foreach collection="p.yearNotIn" item="item" open="(" separator="," close=")">#{item}</foreach>
+            </if>
         </where>
         GROUP BY `range`
         ORDER BY `range`
     </select>
 
-    <!-- 年份直方图聚合：如无 year 字段或参数则返回空（不报错） -->
+    <!-- 年份直方图聚合：year 字段-->
     <select id="yearHistogram" resultType="map">
         <choose>
             <when test="p.yearField != null and p.yearField != ''">
@@ -302,5 +688,8 @@
     <!-- 分桶聚合：总数分桶，无真实需求，返回空结果，防止绑定异常 -->
     <select id="totalBuckets" resultType="map">
         SELECT null AS `key`, 0 AS `count` WHERE 1=0
+    </select>
+    <select id="totalStats" resultType="java.lang.Integer">
+        SELECT 1
     </select>
 </mapper>

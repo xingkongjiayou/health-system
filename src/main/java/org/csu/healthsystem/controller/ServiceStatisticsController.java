@@ -2,6 +2,7 @@ package org.csu.healthsystem.controller;
 
 import org.csu.healthsystem.common.CommonResponse;
 import org.csu.healthsystem.pojo.DO.HospitalServiceStatistics;
+import org.csu.healthsystem.pojo.DTO.QualityAnalysisRequest;
 import org.csu.healthsystem.pojo.DTO.QueryDTO;
 import org.csu.healthsystem.pojo.VO.ResultVO;
 import org.csu.healthsystem.pojo.VO.ServiceQualityAnalysisVO;
@@ -24,11 +25,9 @@ public class ServiceStatisticsController {
         List<HospitalServiceStatistics> list = serviceStatisticsService.getAllHospitalServiceStatistics();
         return CommonResponse.createForSuccess(list);
     }
-    @GetMapping("/quality-analysis")
-    public CommonResponse<ServiceQualityAnalysisVO> getQualityAnalysis(
-            @RequestParam String hospitalType,
-            @RequestParam String analysisType) {
-        ServiceQualityAnalysisVO vo = serviceStatisticsService.getServiceQualityAnalysis(hospitalType, analysisType);
+    @PostMapping("/quality-analysis")
+    public CommonResponse<ServiceQualityAnalysisVO> qualityAnalysis(@RequestBody QualityAnalysisRequest request) {
+        ServiceQualityAnalysisVO vo = serviceStatisticsService.getServiceQualityAnalysis(request);
         return CommonResponse.createForSuccess(vo);
     }
     @Autowired

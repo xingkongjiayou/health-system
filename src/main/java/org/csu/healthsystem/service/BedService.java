@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.csu.healthsystem.pojo.DO.HealthBedCategory;
 import org.csu.healthsystem.pojo.DO.HospitalServiceStatistics;
 import org.csu.healthsystem.pojo.DO.TotalBedCount;
+import org.csu.healthsystem.pojo.DTO.BedUtilizationAnalysisRequest;
 import org.csu.healthsystem.pojo.VO.BedUtilizationAnalysisVO;
 import org.csu.healthsystem.util.HealthBedCategoryDao;
 import org.csu.healthsystem.util.HospitalServiceStatisticsDao;
@@ -35,7 +36,10 @@ public class BedService {
     @Autowired
     private HospitalServiceStatisticsDao hospitalServiceStatisticsDao;
 
-    public BedUtilizationAnalysisVO getBedUtilizationAnalysis(Integer year, String hospitalType) {
+    public BedUtilizationAnalysisVO getBedUtilizationAnalysis(BedUtilizationAnalysisRequest request) {
+        Integer year = request.getYear();
+        String hospitalType = request.getHospitalType();
+
         // 查询床位数和服务统计
         List<HealthBedCategory> bedList = healthBedCategoryDao.getAll();
         List<HospitalServiceStatistics> statList = hospitalServiceStatisticsDao.getAll();
@@ -50,8 +54,9 @@ public class BedService {
                 .filter(b -> b.getYear().equals(year))
                 .findFirst().orElse(null);
 
-        BedUtilizationAnalysisVO.UtilizationData data = new BedUtilizationAnalysisVO.UtilizationData();
+        BedUtilizationAnalysisVO.UtilizationData data = null;
         if (stat != null && bed != null) {
+            data = new BedUtilizationAnalysisVO.UtilizationData();
             data.setHospitalType(stat.getTypeName());
             data.setBedUtilizationRate(stat.getBedUtilizationRate());
             data.setAvgLengthOfStay(stat.getAvgLengthOfStay());

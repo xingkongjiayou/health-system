@@ -2,6 +2,7 @@ package org.csu.healthsystem.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.csu.healthsystem.pojo.DO.HospitalServiceStatistics;
+import org.csu.healthsystem.pojo.DTO.QualityAnalysisRequest;
 import org.csu.healthsystem.pojo.VO.ServiceQualityAnalysisVO;
 import org.csu.healthsystem.util.HospitalServiceStatisticsDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +22,21 @@ public class ServiceStatisticsService {
     public List<HospitalServiceStatistics> getAllHospitalServiceStatistics() {
         return hospitalServiceStatisticsDao.getAll();
     }
-    public ServiceQualityAnalysisVO getServiceQualityAnalysis(String hospitalType, String analysisType) {
+    public ServiceQualityAnalysisVO getServiceQualityAnalysis(QualityAnalysisRequest request) {
+        Integer year = request.getYear();
+        String hospitalType = request.getHospitalType();
+
         List<HospitalServiceStatistics> statList = hospitalServiceStatisticsDao.getAll();
         if (statList == null || statList.isEmpty()) return null;
 
-        // 1. 找到目标医院类型
-        HospitalServiceStatistics stat = statList.stream()
-                .filter(s -> hospitalType.equals(s.getTypeName()))
-                .findFirst().orElse(null);
-        if (stat == null) return null;
+        // 按年份和类型筛选
+        List<HospitalServiceStatistics> filtered = statList.stream()
+                .filter(s -> (year == null || year.equals(s.getYear())) &&
+                        (hospitalType == null || hospitalType.equals(s.getTypeName())))
+                .collect(Collectors.toList());
+        if (filtered.isEmpty()) return null;
+
+        HospitalServiceStatistics stat = filtered.get(0);
 
         // 2. 计算服务指标
         long totalOut = stat.getOutpatientVisits() != null ? stat.getOutpatientVisits() : 0L;
@@ -53,6 +60,7 @@ public class ServiceStatisticsService {
 
         // 3. comparison 排名
         List<HospitalServiceStatistics> sorted = statList.stream()
+                .filter(s -> year == null || year.equals(s.getYear()))
                 .sorted(Comparator.comparing(HospitalServiceStatistics::getBedUtilizationRate).reversed())
                 .collect(Collectors.toList());
         int ranking = 1;
@@ -62,14 +70,14 @@ public class ServiceStatisticsService {
                 break;
             }
         }
-        double efficiency = bedUtil; // 这里用床位使用率做效率分数
+        double efficiency = bedUtil;
 
         ServiceQualityAnalysisVO.Comparison cmp = new ServiceQualityAnalysisVO.Comparison();
         cmp.setHospitalType(hospitalType);
         cmp.setEfficiency(efficiency);
         cmp.setRanking(ranking);
 
-        // 4. 质量指标（可根据阈值自动判定）
+        // 4. 质量指标
         ServiceQualityAnalysisVO.QualityIndicators indicators = new ServiceQualityAnalysisVO.QualityIndicators();
         indicators.setServiceEfficiency(bedUtil > 85 ? "高" : (bedUtil > 70 ? "中" : "低"));
         indicators.setResourceUtilization(bedUtil > 85 ? "优秀" : (bedUtil > 70 ? "良好" : "一般"));

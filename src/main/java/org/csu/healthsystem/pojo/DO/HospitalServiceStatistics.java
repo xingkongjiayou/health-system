@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class HospitalServiceStatistics {
     private Integer id;
+    private Integer year;
     private String typeName;
     private Long outpatientVisits;
     private Long emergencyVisits;

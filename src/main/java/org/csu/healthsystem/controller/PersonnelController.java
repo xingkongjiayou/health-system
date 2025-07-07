@@ -4,6 +4,7 @@ import org.csu.healthsystem.common.CommonResponse;
 import org.csu.healthsystem.pojo.DO.HealthPersonCategory;
 import org.csu.healthsystem.pojo.DO.TotalHealthPerson;
 import org.csu.healthsystem.pojo.DTO.QueryDTO;
+import org.csu.healthsystem.pojo.DTO.StructureAnalysisRequest;
 import org.csu.healthsystem.pojo.VO.PageResultVO;
 import org.csu.healthsystem.pojo.VO.PersonnelStructureAnalysisVO;
 import org.csu.healthsystem.pojo.VO.ResultVO;
@@ -34,9 +35,9 @@ public class PersonnelController {
         List<TotalHealthPerson> list = personnelService.getAllTotalHealthPerson();
         return CommonResponse.createForSuccess(list);
     }
-    @GetMapping("/structure-analysis")
-    public CommonResponse<PersonnelStructureAnalysisVO> getStructureAnalysis() {
-        PersonnelStructureAnalysisVO vo = personnelService.getPersonnelStructureAnalysis();
+    @PostMapping("/structure-analysis")
+    public CommonResponse<PersonnelStructureAnalysisVO> getStructureAnalysis(@RequestBody StructureAnalysisRequest request) {
+        PersonnelStructureAnalysisVO vo = personnelService.getPersonnelStructureAnalysis(request.getYear());
         return CommonResponse.createForSuccess(vo);
     }
     @PostMapping("/category-stats/query")

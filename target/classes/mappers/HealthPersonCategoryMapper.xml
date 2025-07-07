@@ -7,4 +7,10 @@
             nurse, pharmacist, total
         FROM health_person_category
     </select>
+    <select id="getByYear" resultType="org.csu.healthsystem.pojo.DO.HealthPersonCategory">
+        SELECT id, year, health_personnel AS healthPersonnel, licensed_physician AS licensedPhysician,
+            nurse, pharmacist, total
+        FROM health_person_category
+        WHERE year = #{year}
+    </select>
 </mapper>

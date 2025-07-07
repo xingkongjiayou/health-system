@@ -28,21 +28,26 @@ public class PersonnelService {
     public List<HealthPersonCategory> getAllHealthPersonCategory() {
         return healthPersonCategoryDao.getAll();
     }
-    public PersonnelStructureAnalysisVO getPersonnelStructureAnalysis() {
+    public PersonnelStructureAnalysisVO getPersonnelStructureAnalysis(Integer year) {
         List<HealthPersonCategory> categories = healthPersonCategoryDao.getAll();
         if (categories == null || categories.isEmpty()) return null;
 
-        // 按年份升序排序
-        categories = categories.stream()
-                .sorted(Comparator.comparing(HealthPersonCategory::getYear))
-                .collect(Collectors.toList());
+        HealthPersonCategory target = null;
+        if (year != null) {
+            target = healthPersonCategoryDao.getByYear(year);
+            if (target == null) {
+                // 若该年无数据，默认取最新
+                target = categories.stream().max(Comparator.comparing(HealthPersonCategory::getYear)).orElse(null);
+            }
+        } else {
+            target = categories.stream().max(Comparator.comparing(HealthPersonCategory::getYear)).orElse(null);
+        }
+        if (target == null) return null;
 
-        // 最新年份数据
-        HealthPersonCategory latest = categories.get(categories.size() - 1);
-        double total = latest.getTotal() != null ? latest.getTotal() : 0.0;
-        double physician = latest.getLicensedPhysician() != null ? latest.getLicensedPhysician() : 0.0;
-        double nurse = latest.getNurse() != null ? latest.getNurse() : 0.0;
-        double pharmacist = latest.getPharmacist() != null ? latest.getPharmacist() : 0.0;
+        double total = target.getTotal() != null ? target.getTotal() : 0.0;
+        double physician = target.getLicensedPhysician() != null ? target.getLicensedPhysician() : 0.0;
+        double nurse = target.getNurse() != null ? target.getNurse() : 0.0;
+        double pharmacist = target.getPharmacist() != null ? target.getPharmacist() : 0.0;
         double other = total - physician - nurse - pharmacist;
 
         // 结构占比
@@ -56,6 +61,9 @@ public class PersonnelService {
         String doctorNurseRatio = (physician > 0 && nurse > 0) ? "1:" + round2(nurse / physician) : "-";
 
         // 年增长
+        categories = categories.stream()
+                .sorted(Comparator.comparing(HealthPersonCategory::getYear))
+                .collect(Collectors.toList());
         List<PersonnelStructureAnalysisVO.YearlyGrowth> yearlyGrowthList = new ArrayList<>();
         for (int i = 0; i < categories.size(); i++) {
             HealthPersonCategory c = categories.get(i);
@@ -87,7 +95,7 @@ public class PersonnelService {
 
         // 组装VO
         PersonnelStructureAnalysisVO vo = new PersonnelStructureAnalysisVO();
-        vo.setCurrentYear(latest.getYear());
+        vo.setCurrentYear(target.getYear());
         vo.setStructure(structure);
         vo.setDoctorNurseRatio(doctorNurseRatio);
         vo.setYearlyGrowth(yearlyGrowthList);

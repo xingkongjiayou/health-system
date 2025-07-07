@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.csu.healthsystem.common.CommonResponse;
 import org.csu.healthsystem.pojo.DO.HealthBedCategory;
 import org.csu.healthsystem.pojo.DO.TotalBedCount;
+import org.csu.healthsystem.pojo.DTO.BedUtilizationAnalysisRequest;
 import org.csu.healthsystem.pojo.DTO.QueryDTO;
 import org.csu.healthsystem.pojo.VO.BedUtilizationAnalysisVO;
 import org.csu.healthsystem.pojo.VO.ResultVO;
@@ -34,11 +35,10 @@ public class BedController {
         List<TotalBedCount> list = bedService.getAllTotalBedCount();
         return CommonResponse.createForSuccess(list);
     }
-    @GetMapping("/utilization-analysis")
-    public CommonResponse<BedUtilizationAnalysisVO> getUtilizationAnalysis(
-            @RequestParam Integer year,
-            @RequestParam String hospitalType) {
-        BedUtilizationAnalysisVO vo = bedService.getBedUtilizationAnalysis(year, hospitalType);
+    @PostMapping("/utilization-analysis")
+    public CommonResponse<BedUtilizationAnalysisVO> getBedUtilizationAnalysis(
+            @RequestBody BedUtilizationAnalysisRequest request) {
+        BedUtilizationAnalysisVO vo = bedService.getBedUtilizationAnalysis(request);
         return CommonResponse.createForSuccess(vo);
     }
     @PostMapping("/category-stats/query")
